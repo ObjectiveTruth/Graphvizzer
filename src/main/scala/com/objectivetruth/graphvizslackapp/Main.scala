@@ -34,6 +34,8 @@ object Main {
         awsGatewayInput match{
             case command:Success[AWSGatewayInput] => {
                 if(command.get.body.token.contentEquals(command.get.officialSlackToken)) {
+                    output.close()
+
                     val userTextWithoutNewLines = command.get.body.text.replaceAll("\r|\n", " ")
                     val URLEncodedDotStringFromUser = URLEncoder.encode(userTextWithoutNewLines, "UTF-8")
                     val googleAPIsURL = s"https://chart.googleapis.com/chart?chl=$URLEncodedDotStringFromUser&cht=gv"
@@ -50,26 +52,26 @@ object Main {
 
                     println(s"ImgurResponse: $imgurResponse")
 
+                    scalaMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                     if(imgurResponse.isCodeInRange(199, 300)) {
-                        scalaMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                         val imgurResponseJSON = scalaMapper.readValue(imgurResponse.body, classOf[ImgurResponse])
                         val returnResponse = OK(imgurResponseJSON.data.link)
-
-                        scalaMapper.writeValue(output, returnResponse)
-
-
-
-/*                        val sendingBackToSlackUser = Http(command.get.body.responseUrl)
+                        val sendingBackToSlackUser = Http(command.get.body.responseUrl)
                           .header("Content-type", "application/json")
                           .method("POST")
                           .postData(scalaMapper.writeValueAsString(returnResponse))
                           .asString
 
-                        println(sendingBackToSlackUser)*/
+                        println(sendingBackToSlackUser)
                     }else{
-                        val returnBadRequest = BadRequest("BadRequest: Incorrect DOT Formatting")
-                        println(returnBadRequest.toString)
-                        scalaMapper.writeValue(output, returnBadRequest)
+                        val returnBadRequest = BadRequest("Bad DOT Formatting")
+                        val sendingBackToSlackUser = Http(command.get.body.responseUrl)
+                          .header("Content-type", "application/json")
+                          .method("POST")
+                          .postData(scalaMapper.writeValueAsString(returnBadRequest))
+                          .asString
+
+                        println(sendingBackToSlackUser)
                     }
                 }else {
                     val returnUnAuthorized = Unauthorized("Unauthorized: Wrong slack token")
