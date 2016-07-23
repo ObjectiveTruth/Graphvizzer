@@ -6,5 +6,4 @@ object AppReturns {
     case class Unauthorized(text: String)
 
     case class BadRequest(text: String)
-
 }

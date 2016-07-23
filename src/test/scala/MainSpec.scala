@@ -19,7 +19,7 @@ class MainSpec extends FlatSpec with Matchers with MockFactory {
       imgurResponseJSON.text should include ("http://i.imgur.com/")
     }*/
 
-    "Receiver" should "Return Bad Request when bad DOT format" in {
+/*    "Receiver" should "Return Bad Request when bad DOT format" in {
         val testInputStream = TestHelpers.getTestGatewayJSONBadRequest
         val testOutputStream = new ByteArrayOutputStream(64)
 
@@ -30,7 +30,7 @@ class MainSpec extends FlatSpec with Matchers with MockFactory {
         val imgurResponseJSON = Main.scalaMapper.readValue(returnFromReceiver, classOf[BadRequest])
 
         imgurResponseJSON.text should equal  ("BadRequest: Incorrect DOT Formatting")
-    }
+    }*/
 
     "Receiver" should "Return Bad Request when bad JSON format" in {
         val testInputStream = TestHelpers.getTestGatewayJSONBadJsonFormat
