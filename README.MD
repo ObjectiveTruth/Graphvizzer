@@ -27,7 +27,7 @@ Uses [AWS Lambdas](https://aws.amazon.com/lambda/details/) to between [imgur](ht
 
 ### Deployment Diagram
 
-![Deployment Diagram](readme_resources/DeploymentDiagram.png "Deployment Diagram")
+![Deployment Diagram](readme_resources/DeploymentDiagram.jpeg "Deployment Diagram")
 
 ### Interaction Diagram
 
