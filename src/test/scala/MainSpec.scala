@@ -7,7 +7,7 @@ import org.scalatest._
 
 class MainSpec extends FlatSpec with Matchers with MockFactory {
 /*    "Receiver" should "Return Imgur Url when everything is good" in {
-      val testInputStream = TestHelpers.getTestSlackJson
+      val testInputStream = TestHelpers.getTestGatewayJSON
       val testOutputStream = new ByteArrayOutputStream(64)
 
       Main.receiver(testInputStream, testOutputStream)
