@@ -4,8 +4,9 @@ version := "1.0"
 
 scalaVersion := "2.11.8"
 
-// Change this to another test framework if you prefer
-libraryDependencies += "org.scalatest" %% "scalatest" % "2.2.4" % "test"
+// Testing dependancies
+libraryDependencies += "org.scalatest" %% "scalatest" % "2.2.4" % Test
+libraryDependencies += "org.scalamock" %% "scalamock-scalatest-support" % "3.2.2" % Test
 
 // AWS only supports java 1.8 this is required
 javacOptions ++= Seq("-source", "1.8", "-target", "1.8", "-Xlint")
