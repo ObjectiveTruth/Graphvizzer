@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.PropertyNamingStrategy.SnakeCaseStrategy
 import com.objectivetruth.graphvizslackapp.models._
 import com.objectivetruth.graphvizslackapp.models.AppReturns._
-import com.amazonaws.services.lambda.runtime.Context
 
 import scala.util.{Failure, Success, Try}
 import scalaj.http.{Http, HttpResponse}
@@ -15,7 +14,6 @@ import scalaj.http.{Http, HttpResponse}
 
 
 object Main {
-    val SLACK_TOKEN = "sf0Rq4MMxUUSnTK29cknMRHI"
     val CLIENT_ID = "34b1e110bd71758"
     val IMGUR_API_UPLOAD_ENDPOINT = "https://api.imgur.com/3/image"
 
@@ -26,17 +24,17 @@ object Main {
         mapper.setPropertyNamingStrategy(new SnakeCaseStrategy())
         mapper
     }
-    def receiver(input: InputStream, output: OutputStream, context: Context): Unit = {
+    def receiver(input: InputStream, output: OutputStream): Unit = {
         println("Receiving raw input...")
         println(input.toString)
-        val slashCommand = Try(scalaMapper.readValue(input, classOf[SlashCommandIn]))
-        println(s"JSON Parse Complete: ${slashCommand.toString}")
+        val awsGatewayInput = Try(scalaMapper.readValue(input, classOf[AWSGatewayInput]))
+        println(s"JSON Parse Complete: ${awsGatewayInput.toString}")
 
 
-        slashCommand match{
-            case command:Success[SlashCommandIn] => {
-                if(command.get.token.contentEquals(SLACK_TOKEN)) {
-                    val URLEncodedDotStringFromUser = URLEncoder.encode(command.get.text.replaceAll("\\n", ""), "UTF-8")
+        awsGatewayInput match{
+            case command:Success[AWSGatewayInput] => {
+                if(command.get.body.token.contentEquals(command.get.officialSlackToken)) {
+                    val URLEncodedDotStringFromUser = URLEncoder.encode(command.get.body.text.replaceAll("\\n", ""), "UTF-8")
                     val googleAPIsURL = s"https://chart.googleapis.com/chart?chl=$URLEncodedDotStringFromUser&cht=gv"
                     println(s"Text from user Parsed, will send this: $googleAPIsURL")
 
@@ -44,6 +42,9 @@ object Main {
                       .header("AUTHORIZATION", s"Client-ID ${CLIENT_ID}")
                       .method("POST")
                       .param("image", googleAPIsURL)
+                      .param("type", "URL")
+                      .param("title", "Graphviz Graph made in Slack")
+                      .param("description", "Created using https://github.com/ObjectiveTruth/Graphviz-Slack-App")
                       .asString
 
                     println(s"ImgurResponse: $imgurResponse")
@@ -52,8 +53,13 @@ object Main {
                         scalaMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                         val imgurResponseJSON = scalaMapper.readValue(imgurResponse.body, classOf[ImgurResponse])
                         val returnResponse = OK(imgurResponseJSON.data.link)
+                        val sendingBackToSlackUser = Http(command.get.body.responseUrl)
+                          .header("Content-type", "application/json")
+                          .method("POST")
+                          .postData(scalaMapper.writeValueAsString(returnResponse))
+                          .asString
 
-                        scalaMapper.writeValue(output, returnResponse)
+                        println(sendingBackToSlackUser)
                     }else{
                         val returnBadRequest = BadRequest("BadRequest: Incorrect DOT Formatting")
                         println(returnBadRequest.toString)
