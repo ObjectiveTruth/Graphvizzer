@@ -2,6 +2,8 @@
 
 Makes graphs with imgur links directly in your chat channel, instantly, using the popular [DOT](http://www.graphviz.org/content/dot-language) notation. 
 
+![Example Usage](readme_resources/graphviz_demo.gif "Example Usage")
+
 ## History
 
 I love diagram.. as you can see from this repo. Software is created by people and as the team grows, communication becomes more and more difficult. I use `Graphviz` alot to communicate ideas and reduce ambiguity. I hope you'll find it helpful too!
