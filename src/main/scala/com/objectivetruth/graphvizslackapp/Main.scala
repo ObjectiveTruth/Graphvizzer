@@ -34,7 +34,8 @@ object Main {
         awsGatewayInput match{
             case command:Success[AWSGatewayInput] => {
                 if(command.get.body.token.contentEquals(command.get.officialSlackToken)) {
-                    val URLEncodedDotStringFromUser = URLEncoder.encode(command.get.body.text.replaceAll("\\n", ""), "UTF-8")
+                    val userTextWithoutNewLines = command.get.body.text.replaceAll("\r|\n", " ")
+                    val URLEncodedDotStringFromUser = URLEncoder.encode(userTextWithoutNewLines, "UTF-8")
                     val googleAPIsURL = s"https://chart.googleapis.com/chart?chl=$URLEncodedDotStringFromUser&cht=gv"
                     println(s"Text from user Parsed, will send this: $googleAPIsURL")
 
@@ -53,13 +54,18 @@ object Main {
                         scalaMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                         val imgurResponseJSON = scalaMapper.readValue(imgurResponse.body, classOf[ImgurResponse])
                         val returnResponse = OK(imgurResponseJSON.data.link)
-                        val sendingBackToSlackUser = Http(command.get.body.responseUrl)
+
+                        scalaMapper.writeValue(output, returnResponse)
+
+
+
+/*                        val sendingBackToSlackUser = Http(command.get.body.responseUrl)
                           .header("Content-type", "application/json")
                           .method("POST")
                           .postData(scalaMapper.writeValueAsString(returnResponse))
                           .asString
 
-                        println(sendingBackToSlackUser)
+                        println(sendingBackToSlackUser)*/
                     }else{
                         val returnBadRequest = BadRequest("BadRequest: Incorrect DOT Formatting")
                         println(returnBadRequest.toString)
