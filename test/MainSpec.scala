@@ -1,11 +1,8 @@
-import java.io.{ByteArrayOutputStream, InputStream, OutputStream}
-
-import com.objectivetruth.graphvizslackapp.Main
-import com.objectivetruth.graphvizslackapp.models.AppReturns.{BadRequest, OK, Unauthorized}
-import org.scalamock.scalatest.MockFactory
+import java.io.ByteArrayOutputStream
+import com.objectivetruth.graphvizslackapp.models.AppReturns.{BadRequest, Unauthorized}
 import org.scalatest._
 
-class MainSpec extends FlatSpec with Matchers with MockFactory {
+/*class MainSpec extends FlatSpec with Matchers with MockFactory {
 /*    "Receiver" should "Return Imgur Url when everything is good" in {
       val testInputStream = TestHelpers.getTestGatewayJSON
       val testOutputStream = new ByteArrayOutputStream(64)
@@ -57,5 +54,5 @@ class MainSpec extends FlatSpec with Matchers with MockFactory {
 
         imgurResponseJSON.text should equal  ("Unauthorized: Wrong slack token")
     }
-}
+}*/
 
