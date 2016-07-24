@@ -3,7 +3,8 @@ package controllers
 import javax.inject._
 
 import akka.actor.ActorSystem
-import models.{SlackPrivateUserResponse, SlashCommandIn}
+import com.objectivetruth.graphvizslackapp.models.ImgurResponse
+import models.{SlackChannelUserResponse, SlackPrivateUserResponse, SlashCommandIn}
 import play.api.mvc._
 import play.api.libs.json.Json
 import com.typesafe.config.ConfigFactory
@@ -13,30 +14,36 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class GraphvizCreationController @Inject()(actorSystem: ActorSystem)(implicit exec: ExecutionContext)
   extends Controller {
+    val config = ConfigFactory.load("strings.conf")
+    val BAD_FORM_DATA_MSG = config.getString("ErrorMessage.BadFormDataFromSlack")
+    val BAD_TOKEN_MSG = config.getString("ErrorMessage.BadTokenFromSlack")
+    val SLACK_EXPECTED_TOKEN = "sf0Rq4MMxUUSnTK29cknMRHI"
 
     def createGraphvizDotStringAndReturnImgurLink = Action.async{ implicit request =>
         import SlashCommandIn._
 
-        val BAD_FORM_DATA_MSG = ConfigFactory.load("strings.conf")
-          .getString("ErrorMessage.BadFormDataFromSlack")
 
         slackForm.bindFromRequest.fold(
+
             formWithErrors => {
-                Future{
-                    Ok(Json.toJson(SlackPrivateUserResponse(BAD_FORM_DATA_MSG)))
-                }
+                Future{Ok(Json.toJson(SlackPrivateUserResponse(BAD_FORM_DATA_MSG)))}
             },
-            slackData => {
-                Future{
-                    Ok("yup")
+
+            goodValidatedSlackRequest => {
+                if(goodValidatedSlackRequest.token.contentEquals(SLACK_EXPECTED_TOKEN)) {
+                    Future{Ok(goodValidatedSlackRequest.token)}
+/*                    Future{Ok(
+                        Json.toJson(_doImageCreationAndGetImgurLink))}*/
+
+                }else {
+                    Future{Ok(Json.toJson(SlackPrivateUserResponse(BAD_TOKEN_MSG)))}
                 }
             }
         )
+    }
 
-/*        val futureThatAlwaysSuceeds: Future[Result] = Future{
-            Ok("Hello World")
-        }
-        futureThatAlwaysSuceeds*/
+    def _doImageCreationAndGetImgurLink: SlackChannelUserResponse = {
+        SlackChannelUserResponse("Hey")
     }
 /*    object Main {
         val CLIENT_ID = "34b1e110bd71758"
