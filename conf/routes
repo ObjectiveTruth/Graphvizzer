@@ -2,5 +2,5 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-GET     /createImgurLinkForDOTString controllers.GraphvizCreationController.createGraphvizDotStringAndReturnImgurLink
+POST     /createImgurLinkForDOTString controllers.GraphvizCreationController.createGraphvizDotStringAndReturnImgurLink
 

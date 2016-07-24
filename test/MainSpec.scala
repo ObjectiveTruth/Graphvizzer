@@ -1,5 +1,5 @@
 import java.io.ByteArrayOutputStream
-import com.objectivetruth.graphvizslackapp.models.AppReturns.{BadRequest, Unauthorized}
+//import com.objectivetruth.graphvizslackapp.models.AppReturns.{BadRequest, Unauthorized}
 import org.scalatest._
 
 /*class MainSpec extends FlatSpec with Matchers with MockFactory {

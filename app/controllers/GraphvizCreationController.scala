@@ -1,20 +1,42 @@
 package controllers
 
 import javax.inject._
-import akka.actor.ActorSystem
-import play.api.mvc._
 
-import scala.concurrent.{ExecutionContext, Future, Promise}
+import akka.actor.ActorSystem
+import models.{SlackPrivateUserResponse, SlashCommandIn}
+import play.api.mvc._
+import play.api.libs.json.Json
+import com.typesafe.config.ConfigFactory
+
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class GraphvizCreationController @Inject()(actorSystem: ActorSystem)(implicit exec: ExecutionContext)
   extends Controller {
 
-    def createGraphvizDotStringAndReturnImgurLink = Action.async{
-        val futureThatAlwaysSuceeds: Future[Result] = Future{
+    def createGraphvizDotStringAndReturnImgurLink = Action.async{ implicit request =>
+        import SlashCommandIn._
+
+        val BAD_FORM_DATA_MSG = ConfigFactory.load("strings.conf")
+          .getString("ErrorMessage.BadFormDataFromSlack")
+
+        slackForm.bindFromRequest.fold(
+            formWithErrors => {
+                Future{
+                    Ok(Json.toJson(SlackPrivateUserResponse(BAD_FORM_DATA_MSG)))
+                }
+            },
+            slackData => {
+                Future{
+                    Ok("yup")
+                }
+            }
+        )
+
+/*        val futureThatAlwaysSuceeds: Future[Result] = Future{
             Ok("Hello World")
         }
-        futureThatAlwaysSuceeds
+        futureThatAlwaysSuceeds*/
     }
 /*    object Main {
         val CLIENT_ID = "34b1e110bd71758"
