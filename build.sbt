@@ -1,28 +1,16 @@
 name := """graphviz-slack-app"""
 
-version := "1.0"
+version := "1.0-SNAPSHOT"
 
-scalaVersion := "2.11.8"
+lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
-// Testing dependancies
-libraryDependencies += "org.scalatest" %% "scalatest" % "2.2.4" % Test
-libraryDependencies += "org.scalamock" %% "scalamock-scalatest-support" % "3.2.2" % Test
+scalaVersion := "2.11.7"
 
-// AWS only supports java 1.8 this is required
-javacOptions ++= Seq("-source", "1.8", "-target", "1.8", "-Xlint")
+libraryDependencies ++= Seq(
+  jdbc,
+  cache,
+  ws,
+  "org.scalatestplus.play" %% "scalatestplus-play" % "1.5.1" % Test
+)
 
-// Uncomment to use Akka
-//libraryDependencies += "com.typesafe.akka" %% "akka-actor" % "2.3.11"
-
-lazy val root = (project in file(".")).
-    settings(
-        name := "graphviz-slack-app",
-        version := "1.0",
-        scalaVersion := "2.11.8",
-        retrieveManaged := true,
-        libraryDependencies += "com.amazonaws" % "aws-lambda-java-core" % "1.0.0",
-        libraryDependencies += "com.amazonaws" % "aws-lambda-java-events" % "1.0.0",
-        libraryDependencies += "com.fasterxml.jackson.module" % "jackson-module-scala_2.11" % "2.7.2",
-        libraryDependencies +=  "org.scalaj" %% "scalaj-http" % "2.3.0"
-    )
-
+resolvers += "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"
