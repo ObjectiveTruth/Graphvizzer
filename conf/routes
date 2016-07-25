@@ -3,5 +3,5 @@
 # ~~~~
 
 POST     /createImgurLinkForDOTString controllers.GraphvizCreationController.createGraphvizDotStringAndReturnImgurLink
-GET     /foo    controllers.GraphvizCreationController.foo
+GET     / controllers.HealthCheckController.isAlive
 

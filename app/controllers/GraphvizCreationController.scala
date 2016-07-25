@@ -5,17 +5,20 @@ import javax.inject._
 
 import akka.actor.ActorSystem
 import akka.stream.scaladsl.{FileIO, Source}
+import com.objectivetruth.graphvizslackapp.models.ImgurResponse
 import models.{SlackChannelUserResponse, SlackPrivateUserResponse, SlashCommandIn}
 import play.api.mvc._
-import play.api.libs.json.Json
+import play.api.libs.json.{JsSuccess, Json}
 import com.typesafe.config.ConfigFactory
+import org.asynchttpclient.AsyncHttpClient
+import org.asynchttpclient.request.body.multipart.StringPart
 import play.api.Logger
-import play.api.libs.ws.{WSClient, WSResponse}
+import play.api.libs.ws.{WS, WSClient, WSResponse}
 import play.api.mvc.MultipartFormData.{DataPart, FilePart}
 
 import scala.sys.process._
 import scala.concurrent.{ExecutionContext, Future}
-import scala.util.Try
+import scala.util.{Failure, Try}
 
 @Singleton
 class GraphvizCreationController @Inject() (ws: WSClient)(actorSystem: ActorSystem)(implicit exec: ExecutionContext)
@@ -25,13 +28,8 @@ class GraphvizCreationController @Inject() (ws: WSClient)(actorSystem: ActorSyst
     val BAD_TOKEN_MSG = config.getString("SystemMessages.BadTokenFromSlack")
     val PROCESSING_MSG = config.getString("BusinessMessages.ProcessingYourRequest")
     val BAD_DOT_FORMAT_MSG = config.getString("BusinessMessages.BadDOTFormatFromSlack")
-    val SLACK_EXPECTED_TOKEN = "sf0Rq4MMxUUSnTK29cknMRHI"
+    val SLACK_EXPECTED_TOKEN = ConfigFactory.load().getString("SLACK_AUTHENTICATION_TOKEN")
     val / = File.separator
-
-    def foo = Action.async { implicit request =>
-        _doImageCreationAndGetImgurLink(SlashCommandIn("", "", "", "", "", "", "", "", "digraph G{a->b;}", ""))
-        Future{Ok("good")}
-    }
 
     def createGraphvizDotStringAndReturnImgurLink = Action.async{ implicit request =>
         import SlashCommandIn._
@@ -66,36 +64,70 @@ class GraphvizCreationController @Inject() (ws: WSClient)(actorSystem: ActorSyst
 
         if (out != SYSTEM_SUCCESS_CODE) {
             Logger.warn(s"Bad Dot Format: $userTextWithoutNewLines")
-            sendResponseToUser(slackInput.response_url, SlackPrivateUserResponse(BAD_DOT_FORMAT_MSG))
+            sendPrivateResponseToUser(slackInput.response_url, SlackPrivateUserResponse(BAD_DOT_FORMAT_MSG))
         } else {
-/*            uploadFileToImgur(temporaryFileName, slackInput).onComplete(tryResponse => {
-                _cleanupTemporaryFile(temporaryFileName)
+            uploadFileToImgur(temporaryFileName, slackInput).onComplete(tryResponse => {
+                _cleanupTemporaryFileSilently(temporaryFileName)
 
                 if(tryResponse.isFailure) {
-                    Logger.debug("Bad imgur response", tryResponse.failed.get)
+                    Logger.error("Error From Imgur", tryResponse.failed.get)
                 }else{
-                    Logger.debug("Good imgur response: " + tryResponse.get.toString)
+                    val imgurResponseBody = tryResponse.get.body
+
+                    Logger.debug(s"Good imgur response: $imgurResponseBody")
+
+                    Json.parse(imgurResponseBody).validate[ImgurResponse] match {
+                        case imgurData: JsSuccess[ImgurResponse] =>  {
+                            Logger.info(s"Sending imgur link to user: ${imgurData.get.data.link}")
+                            sendChannelResponseToUser(slackInput.response_url,
+                                SlackChannelUserResponse(imgurData.get.data.link))
+                        }
+                        case _ => Logger.error("Unexpected response from Imgur")
+                    }
                 }
-            })*/
+            })
         }
     }
 
-    def sendResponseToUser(slackResponseUrl: String, slackPrivateUserResponse: SlackPrivateUserResponse): Unit = {
+    def sendPrivateResponseToUser(slackResponseUrl: String, slackPrivateUserResponse: SlackPrivateUserResponse): Unit = {
         ws.url(slackResponseUrl)
-            .withHeaders("CONTENT-TYPE" -> "application/json")
+          .withHeaders("CONTENT-TYPE" -> "application/json")
           .withBody(Json.toJson(slackPrivateUserResponse))
+          .get().map{ result =>
+            if(result.status > 199 && result.status < 300) {
+                Logger.info(s"Successfully sent response to slack: ${result.toString}")
+            }else{
+                Logger.error(s"Unexpected response when returning to slack: ${result.toString}")
+            }
+        }
+    }
+
+    def sendChannelResponseToUser(slackResponseUrl: String, slackChannelUserResponse: SlackChannelUserResponse): Unit = {
+        ws.url(slackResponseUrl)
+          .withHeaders("CONTENT-TYPE" -> "application/json")
+          .withBody(Json.toJson(slackChannelUserResponse))
+          .get().map{ result =>
+            if(result.status > 199 && result.status < 300) {
+                Logger.info(s"Successfully sent response to slack: ${result.toString}")
+            }else{
+                Logger.error(s"Unexpected response when returning to slack: ${result.toString}")
+            }
+        }
     }
 
     def uploadFileToImgur(temporaryFilename: String,
                           slackInput: SlashCommandIn): Future[WSResponse] = {
-        ws.url(slackInput.response_url)
-          .post(Source(
+        val IMGUR_UPLOAD_IMAGE_ENDPOINT = "https://api.imgur.com/3/image"
+        val IMGUR_CLIENT_ID = "34b1e110bd71758"
+
+        ws.url(IMGUR_UPLOAD_IMAGE_ENDPOINT)
+            .withHeaders("AUTHORIZATION" -> s"Client-ID ${IMGUR_CLIENT_ID}")
+            .post(Source(
               FilePart("image", temporaryFilename, Option("image/png"), FileIO.fromFile(new File(temporaryFilename)))
-                :: DataPart("type", "file")
                 :: List()))
     }
 
-    def _cleanupTemporaryFile(tempFilename: String): Unit = {
+    def _cleanupTemporaryFileSilently(tempFilename: String): Unit = {
         val file = new File(tempFilename)
         if(file.exists() && file.isFile) {
             if(!file.delete()) {
@@ -103,41 +135,4 @@ class GraphvizCreationController @Inject() (ws: WSClient)(actorSystem: ActorSyst
             }
         }
     }
-
-
-
-
-
-/*        val imgurResponse: HttpResponse[String] = Http(IMGUR_API_UPLOAD_ENDPOINT)
-          .header("AUTHORIZATION", s"Client-ID ${CLIENT_ID}")
-          .method("POST")
-          .param("image", googleAPIsURL)
-          .param("type", "URL")
-          .param("title", "Graphviz Graph made in Slack")
-          .param("description", "Created using https://github.com/ObjectiveTruth/Graphviz-Slack-App")
-          .asString
-
-        println(s"ImgurResponse: $imgurResponse")
-
-        scalaMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-        if(imgurResponse.isCodeInRange(199, 300)) {
-            val imgurResponseJSON = scalaMapper.readValue(imgurResponse.body, classOf[ImgurResponse])
-            val returnResponse = OK(imgurResponseJSON.data.link)
-            val sendingBackToSlackUser = Http(command.get.body.responseUrl)
-              .header("Content-type", "application/json")
-              .method("POST")
-              .postData(scalaMapper.writeValueAsString(returnResponse))
-              .asString
-
-            println(sendingBackToSlackUser)
-        }else{
-            val returnBadRequest = BadRequest("Bad DOT Formatting")
-            val sendingBackToSlackUser = Http(command.get.body.responseUrl)
-              .header("Content-type", "application/json")
-              .method("POST")
-              .postData(scalaMapper.writeValueAsString(returnBadRequest))
-              .asString
-
-            println(sendingBackToSlackUser)
-        }*/
 }

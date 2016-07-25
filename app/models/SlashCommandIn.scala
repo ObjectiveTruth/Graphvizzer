@@ -3,6 +3,7 @@ package models
 import play.api.data.Form
 import play.api.data._
 import play.api.data.Forms._
+import play.api.libs.json.Json
 
 case class SlashCommandIn(
                            token: String,
@@ -32,5 +33,7 @@ object SlashCommandIn {
             "response_url" -> nonEmptyText
         )(SlashCommandIn.apply)(SlashCommandIn.unapply)
     )
+
+    implicit val slashCommandInWrites = Json.writes[SlashCommandIn]
 }
 

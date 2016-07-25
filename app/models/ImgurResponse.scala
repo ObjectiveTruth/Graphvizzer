@@ -1,6 +1,8 @@
 package com.objectivetruth.graphvizslackapp.models
 
-import play.api.libs.json.Json
+import play.api.libs.json._
+import play.api.libs.json.Reads._
+import play.api.libs.functional.syntax._
 
 case class ImgurResponse(
                         data: ImgurImageInformation
@@ -9,10 +11,10 @@ case class ImgurResponse(
 sealed case class ImgurImageInformation(link: String)
 
 object ImgurImageInformation {
-    implicit val imgurImageInformationWrites = Json.writes[ImgurImageInformation]
+    implicit val imgurImageInformationReads: Reads[ImgurImageInformation] = Json.reads[ImgurImageInformation]
 }
 
 object ImgurResponse {
-    implicit val imgurResponseWrites = Json.writes[ImgurResponse]
+    implicit val imgurResponseReads: Reads[ImgurResponse] = Json.reads[ImgurResponse]
 }
 
