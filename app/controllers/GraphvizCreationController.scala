@@ -42,6 +42,7 @@ class GraphvizCreationController @Inject() (ws: WSClient)(actorSystem: ActorSyst
 
             goodValidatedSlackRequest => {
                 if(goodValidatedSlackRequest.token.contentEquals(SLACK_EXPECTED_TOKEN)) {
+                    Logger.debug("Validation Succeeded")
                     _doImageCreationAndGetImgurLink(goodValidatedSlackRequest)
                     Future{Ok(Json.toJson(SlackPrivateUserResponse(PROCESSING_MSG)))}
 
@@ -58,7 +59,7 @@ class GraphvizCreationController @Inject() (ws: WSClient)(actorSystem: ActorSyst
 
         Logger.debug(s"DOT String(whitespace stripped): $userTextWithoutNewLines")
         val userTextAsIS = new ByteArrayInputStream(userTextWithoutNewLines.getBytes("UTF-8"))
-        val temporaryFileName = s"tmp${/}${System.currentTimeMillis()}.png"
+        val temporaryFileName = s"${/}app${/}tmp${/}${System.currentTimeMillis()}.png"
 
         val out = (s"dot -Tpng -o $temporaryFileName" #< userTextAsIS).!
 
@@ -66,6 +67,7 @@ class GraphvizCreationController @Inject() (ws: WSClient)(actorSystem: ActorSyst
             Logger.warn(s"Bad Dot Format: $userTextWithoutNewLines")
             sendPrivateResponseToUser(slackInput.response_url, SlackPrivateUserResponse(BAD_DOT_FORMAT_MSG))
         } else {
+            Logger.warn(s"DOT generation successful")
             uploadFileToImgur(temporaryFileName, slackInput).onComplete(tryResponse => {
                 _cleanupTemporaryFileSilently(temporaryFileName)
 
@@ -92,12 +94,12 @@ class GraphvizCreationController @Inject() (ws: WSClient)(actorSystem: ActorSyst
     def sendPrivateResponseToUser(slackResponseUrl: String, slackPrivateUserResponse: SlackPrivateUserResponse): Unit = {
         ws.url(slackResponseUrl)
           .withHeaders("CONTENT-TYPE" -> "application/json")
-          .withBody(Json.toJson(slackPrivateUserResponse))
-          .get().map{ result =>
+          .post(Json.toJson(slackPrivateUserResponse))
+          .map{ result =>
             if(result.status > 199 && result.status < 300) {
-                Logger.info(s"Successfully sent response to slack: ${result.toString}")
+                Logger.info(s"Successfully sent response to slack: ${result.toString}, body: ${result.body}")
             }else{
-                Logger.error(s"Unexpected response when returning to slack: ${result.toString}")
+                Logger.error(s"Unexpected response when returning to slack: ${result.toString}, body: ${result.body}")
             }
         }
     }
@@ -105,12 +107,12 @@ class GraphvizCreationController @Inject() (ws: WSClient)(actorSystem: ActorSyst
     def sendChannelResponseToUser(slackResponseUrl: String, slackChannelUserResponse: SlackChannelUserResponse): Unit = {
         ws.url(slackResponseUrl)
           .withHeaders("CONTENT-TYPE" -> "application/json")
-          .withBody(Json.toJson(slackChannelUserResponse))
-          .get().map{ result =>
+          .post(Json.toJson(slackChannelUserResponse))
+          .map{ result =>
             if(result.status > 199 && result.status < 300) {
-                Logger.info(s"Successfully sent response to slack: ${result.toString}")
+                Logger.info(s"Successfully sent channel response to slack: ${result.toString}, body: ${result.body}")
             }else{
-                Logger.error(s"Unexpected response when returning to slack: ${result.toString}")
+                Logger.error(s"Unexpected response when returning channel response to slack: ${result.toString}, body: ${result.body}")
             }
         }
     }
