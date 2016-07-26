@@ -44,7 +44,8 @@ class GraphvizCreationController @Inject() (ws: WSClient)(actorSystem: ActorSyst
                 if(goodValidatedSlackRequest.token.contentEquals(SLACK_EXPECTED_TOKEN)) {
                     Logger.debug("Validation Succeeded")
                     _doImageCreationAndGetImgurLink(goodValidatedSlackRequest)
-                    Future{Ok(Json.toJson(SlackPrivateUserResponse(PROCESSING_MSG)))}
+                    Future{Ok(Json.toJson(SlackPrivateUserResponse(PROCESSING_MSG + "\n>>>" +
+                      goodValidatedSlackRequest.text)))}
 
                 }else {
                     Future{Ok(Json.toJson(SlackPrivateUserResponse(BAD_TOKEN_MSG)))}
@@ -65,7 +66,8 @@ class GraphvizCreationController @Inject() (ws: WSClient)(actorSystem: ActorSyst
 
         if (out != SYSTEM_SUCCESS_CODE) {
             Logger.warn(s"Bad Dot Format: $userTextWithoutNewLines")
-            sendPrivateResponseToUser(slackInput.response_url, SlackPrivateUserResponse(BAD_DOT_FORMAT_MSG))
+            sendPrivateResponseToUser(slackInput.response_url,
+                SlackPrivateUserResponse(BAD_DOT_FORMAT_MSG))
         } else {
             Logger.warn(s"DOT generation successful")
             uploadFileToImgur(temporaryFileName, slackInput).onComplete(tryResponse => {
@@ -97,9 +99,9 @@ class GraphvizCreationController @Inject() (ws: WSClient)(actorSystem: ActorSyst
           .post(Json.toJson(slackPrivateUserResponse))
           .map{ result =>
             if(result.status > 199 && result.status < 300) {
-                Logger.info(s"Successfully sent response to slack: ${result.toString}, body: ${result.body}")
+                Logger.info(s"Successfully sent private response to slack: ${result.toString}, body: ${result.body}")
             }else{
-                Logger.error(s"Unexpected response when returning to slack: ${result.toString}, body: ${result.body}")
+                Logger.error(s"Unexpected response when returning private response to slack: ${result.toString}, body: ${result.body}")
             }
         }
     }
