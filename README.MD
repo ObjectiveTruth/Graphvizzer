@@ -1,4 +1,4 @@
-# Graphviz-Slack-App
+# Graphvizzer
 
 Makes graphs with imgur links directly in your chat channel, instantly, using the popular [DOT](http://www.graphviz.org/content/dot-language) notation. 
 
