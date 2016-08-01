@@ -35,7 +35,7 @@ Uses [AWS Lambdas](https://aws.amazon.com/lambda/details/) to between [imgur](ht
 
 ### Interaction Diagram
 
-![Interaction Diagram](readme_resources/InteractionDiagram.png "Interaction Diagram")
+![Interaction Diagram](readme_resources/InteractionDiagram.jpeg "Interaction Diagram")
 
 ## License
 
