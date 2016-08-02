@@ -72,7 +72,7 @@ class ApplicationSpec extends PlaySpec with OneAppPerTest {
         }*/
 
         "send Processing message back if request is correct" in {
-            val PROCESSING_MSG = config.getString("BusinessMessages.ProcessingYourRequest")
+            val PROCESSING_MSG = config.getString("BusinessMessages.ProcessingYourRequest") + "\n>>>digraph G{\\nA -> B;\\n C -> B;\\n}"
             val fakeRequest = FakeRequest(POST, "/createImgurLinkForDOTString")
               .withHeaders("CONTENT-TYPE" -> "application/x-www-form-urlencoded")
               .withTextBody(getStringFromResourcePath(s"slack${/}GoodRequest.txt"))
