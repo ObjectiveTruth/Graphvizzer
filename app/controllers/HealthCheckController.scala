@@ -16,10 +16,5 @@ class HealthCheckController @Inject() (ws: WSClient)(actorSystem: ActorSystem)(i
     def isAlive =  Action.async {
         Future{Ok("Yup, it's alive:")}
     }
-
-    def code = Action.async {
-        val SLACK_EXPECTED_TOKEN = ConfigFactory.load().getString("SLACK_AUTHENTICATION_TOKEN")
-        Future{Ok(SLACK_EXPECTED_TOKEN)}
-    }
 }
 

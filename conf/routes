@@ -4,5 +4,3 @@
 
 POST     /createImgurLinkForDOTString controllers.GraphvizCreationController.createGraphvizDotStringAndReturnImgurLink
 GET     / controllers.HealthCheckController.isAlive
-GET     /code controllers.HealthCheckController.code
-
