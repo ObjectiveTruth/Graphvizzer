@@ -18,7 +18,8 @@ import play.api.mvc.MultipartFormData.{DataPart, FilePart}
 
 import scala.sys.process._
 import scala.concurrent.{ExecutionContext, Future}
-import scala.util.{Failure, Try}
+import common.constants._
+
 
 @Singleton
 class GraphvizCreationController @Inject() (ws: WSClient)(actorSystem: ActorSystem)(implicit exec: ExecutionContext)
@@ -132,11 +133,8 @@ class GraphvizCreationController @Inject() (ws: WSClient)(actorSystem: ActorSyst
 
     def uploadFileToImgur(temporaryFilename: String,
                           slackInput: SlashCommandIn): Future[WSResponse] = {
-        val IMGUR_UPLOAD_IMAGE_ENDPOINT = "https://api.imgur.com/3/image"
-        val IMGUR_CLIENT_ID = "34b1e110bd71758"
-
-        ws.url(IMGUR_UPLOAD_IMAGE_ENDPOINT)
-            .withHeaders("AUTHORIZATION" -> s"Client-ID ${IMGUR_CLIENT_ID}")
+        ws.url(IMGUR.UPLOAD_IMAGE_ENDPOINT)
+            .withHeaders("AUTHORIZATION" -> s"Client-ID ${IMGUR.CLIENT_ID}")
             .post(Source(
               FilePart("image", temporaryFilename, Option("image/png"), FileIO.fromFile(new File(temporaryFilename)))
                 :: List()))

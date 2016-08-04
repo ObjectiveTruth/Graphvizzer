@@ -14,4 +14,6 @@ libraryDependencies ++= Seq(
     "io.gatling.highcharts" % "gatling-charts-highcharts" % "2.2.2" % Test
 )
 
+testOptions in Test += Tests.Argument("-oDF") // Show Full stack traces and Duration of each test
+
 resolvers += "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"

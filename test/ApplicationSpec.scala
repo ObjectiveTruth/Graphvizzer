@@ -1,9 +1,11 @@
 import java.io.File
 
 import com.typesafe.config.ConfigFactory
+import common.constants.IMGUR
 import models.{SlackChannelUserResponse, SlackPrivateUserResponse}
 import org.scalatestplus.play._
-import play.api.libs.json.{JsString, Json}
+import play.api.libs.json._
+import play.api.mvc.{Action, Results}
 import play.api.test.Helpers._
 import play.api.test._
 
@@ -14,7 +16,7 @@ import scala.io.Source
  * You can mock out a whole application including requests, plugins etc.
  * For more information, consult the wiki.
  */
-class ApplicationSpec extends PlaySpec with OneAppPerTest {
+class ApplicationSpec extends PlaySpec with OneAppPerSuite {
     val / = File.separator
     val config = ConfigFactory.load("strings.conf")
 
