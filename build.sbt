@@ -10,6 +10,10 @@ libraryDependencies ++= Seq(
     jdbc,
     cache,
     ws,
+    "com.typesafe.play" %% "play-slick" % "2.0.0",
+    "com.h2database" % "h2" % "1.4.192",
+
+    // Test Dependancies
     "org.scalatestplus.play" %% "scalatestplus-play" % "1.5.1" % Test,
     "io.gatling.highcharts" % "gatling-charts-highcharts" % "2.2.2" % Test
 )
