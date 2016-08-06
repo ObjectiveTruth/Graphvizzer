@@ -27,7 +27,7 @@ primarily shaped by human experience”.
 
 ## Architecture
 
-Uses [AWS Lambdas](https://aws.amazon.com/lambda/details/) to between [imgur](http://imgur.com/) and  [Google Graphviz Chart API](https://developers.google.com/chart/image/docs/gallery/graphviz)
+Uses [Play2! Scala](https://www.playframework.com/) to communicate between [imgur](http://imgur.com/) and [Slack](https://slack.com/)
 
 ### Deployment Diagram
 
