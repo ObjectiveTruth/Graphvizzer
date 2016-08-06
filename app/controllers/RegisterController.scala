@@ -1,6 +1,6 @@
 package controllers
 
-import javax.inject.Inject
+import javax.inject._
 
 import akka.actor.ActorSystem
 import com.typesafe.config.ConfigFactory
@@ -17,6 +17,7 @@ import models.slack.SlackCodeForTokenResponse
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success, Try}
 
+@Singleton
 class RegisterController @Inject()/*(dbConfigProvider: DatabaseConfigProvider)*/(ws: WSClient)(actorSystem: ActorSystem)
                                   (implicit exec: ExecutionContext)
   extends Controller {

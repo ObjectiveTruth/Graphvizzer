@@ -3,7 +3,8 @@ EXPOSE 9000
 
 # Play Options
 ##############
-ENV GRAPHVIZZER_SLACK_AUTHENTICATION_TOKEN "MyMockToken" # Get this from Slack when registering the application
+# Get this from Slack when registering the application. Ensures the messages are indeed coming from Slack
+ENV GRAPHVIZZER_SLACK_AUTHENTICATION_TOKEN "MyMockToken"
 
 ENV GRAPHVIZZER_MAXIMUM_DOT_STRING_LENGTH 500
 ENV GRAPHVIZZER_SLACK_APP_SECRET "MyMockSecret"

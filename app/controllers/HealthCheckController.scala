@@ -5,6 +5,7 @@ import javax.inject._
 import play.api.mvc._
 import akka.actor.ActorSystem
 import com.typesafe.config.ConfigFactory
+import play.api.Logger
 import play.api.libs.ws.WSClient
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -14,6 +15,7 @@ class HealthCheckController @Inject() (actorSystem: ActorSystem)(implicit exec: 
   extends Controller{
 
     def isAlive =  Action.async {
+        Logger.info("isAlive called")
         Future{Ok("Yup, it's alive:")}
     }
 }

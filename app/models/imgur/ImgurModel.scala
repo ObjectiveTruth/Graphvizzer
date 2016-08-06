@@ -16,7 +16,6 @@ import play.api.mvc.MultipartFormData.FilePart
 
 import scala.concurrent.{ExecutionContext, Future}
 
-@Singleton
 class ImgurModel @Inject() (slackModel: SlackModel)(ws: WSClient) (implicit exec: ExecutionContext) {
     val applicationConfig = ConfigFactory.load()
     val MAXIMUM_STRING_LENGTH = applicationConfig.getInt("MAXIMUM_DOT_STRING_LENGTH_NOT_INCLUDING_NEW_LINES")

@@ -16,3 +16,6 @@ addSbtPlugin("com.typesafe.sbt" % "sbt-digest" % "1.1.0")
 addSbtPlugin("com.typesafe.sbt" % "sbt-mocha" % "1.1.0")
 
 addSbtPlugin("org.irundaia.sbt" % "sbt-sassify" % "1.4.2")
+
+// Gatling Test Plugin
+addSbtPlugin("io.gatling" % "gatling-sbt" % "2.2.0")

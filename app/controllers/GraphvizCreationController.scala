@@ -19,7 +19,7 @@ import models.imgur.{ImgurModel, ImgurResponse}
 import models.slack.SlackPrivateUserResponse
 
 @Singleton
-class GraphvizCreationController @Inject()(imgurModel: ImgurModel)(actorSystem: ActorSystem)(implicit exec: ExecutionContext)
+class GraphvizCreationController @Inject()(imgurModel: ImgurModel)(implicit exec: ExecutionContext)
   extends Controller {
     val stringConfig = ConfigFactory.load("strings.conf")
     val applicationConfig = ConfigFactory.load()

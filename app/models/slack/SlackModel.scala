@@ -8,7 +8,6 @@ import play.api.libs.ws.WSClient
 
 import scala.concurrent.ExecutionContext
 
-@Singleton
 class SlackModel @Inject() (ws: WSClient) (implicit exec: ExecutionContext) {
     def sendPrivateResponseToUser(slackResponseUrl: String, slackPrivateUserResponse: SlackPrivateUserResponse): Unit = {
         ws.url(slackResponseUrl)
