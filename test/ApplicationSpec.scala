@@ -1,11 +1,9 @@
 import java.io.File
 
 import com.typesafe.config.ConfigFactory
-import common.constants.IMGUR
-import models.{SlackChannelUserResponse, SlackPrivateUserResponse}
+import models.slack.SlackPrivateUserResponse
 import org.scalatestplus.play._
 import play.api.libs.json._
-import play.api.mvc.{Action, Results}
 import play.api.test.Helpers._
 import play.api.test._
 

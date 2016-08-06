@@ -1,7 +1,6 @@
-package models
+package models.slack
 
 import play.api.data.Form
-import play.api.data._
 import play.api.data.Forms._
 import play.api.libs.json.Json
 

@@ -1,4 +1,4 @@
-package models
+package models.slack
 
 import play.api.libs.json.Json
 

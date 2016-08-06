@@ -9,10 +9,10 @@ import play.api.libs.ws.{WSClient, WSResponse}
 import play.api.mvc.{Action, Controller, Result}
 import slick.driver.JdbcProfile
 import common.constants._
-import models.SlackCodeForTokenResponse
 import play.api.Logger
 import play.api.libs.json.JsSuccess
 import models.database.TeamInfo
+import models.slack.SlackCodeForTokenResponse
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success, Try}

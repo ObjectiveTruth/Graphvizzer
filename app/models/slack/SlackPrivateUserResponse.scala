@@ -1,6 +1,6 @@
-package models
+package models.slack
 
-import play.api.libs.json.{Json}
+import play.api.libs.json.Json
 
 object SlackPrivateUserResponse {
     implicit val slackPrivateuserResponseWrites = Json.writes[SlackPrivateUserResponse]
