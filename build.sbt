@@ -19,5 +19,3 @@ libraryDependencies ++= Seq(
     "io.gatling.highcharts" % "gatling-charts-highcharts" % "2.2.2" % Test,
     "io.gatling"            % "gatling-test-framework"    % "2.2.2" % Test
 )
-
-resolvers += "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"
