@@ -10,8 +10,13 @@ scalaVersion := "2.11.7"
 libraryDependencies ++= Seq(
     jdbc,
     cache,
+    // Play Web Service wrapper for the underlying AsyncHttpClient
     ws,
+    // Play Filters for handling requests as they come in
+    filters,
+    // Play Slick Functional Relational Mapper
     "com.typesafe.play" %% "play-slick" % "2.0.0",
+    // In-memory databsae H2
     "com.h2database" % "h2" % "1.4.192",
 
     // Test Dependancies

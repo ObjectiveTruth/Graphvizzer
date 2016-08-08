@@ -15,7 +15,6 @@ class HealthCheckController @Inject() (actorSystem: ActorSystem)(implicit exec: 
   extends Controller{
 
     def isAlive =  Action.async {
-        Logger.info("isAlive called")
         Future{Ok("Yup, it's alive:")}
     }
 }
