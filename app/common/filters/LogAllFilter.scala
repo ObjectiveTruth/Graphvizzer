@@ -1,11 +1,11 @@
-package filters
+package common.filters
 
 import javax.inject.Inject
-import filters.AccessLogAndTimerFilter.AccessLogAndTimerFilter
+import common.filters.AccessLogAndTimerFilter.AccessLogAndTimerFilter
 import play.api.http.DefaultHttpFilters
 import play.filters.gzip.GzipFilter
 
-class ProdFilter @Inject()(
+class LogAllFilter @Inject()(
                               gzip: GzipFilter,
                               log: AccessLogAndTimerFilter
 

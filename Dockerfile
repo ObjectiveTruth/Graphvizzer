@@ -10,6 +10,8 @@ ENV GRAPHVIZZER_MAXIMUM_DOT_STRING_LENGTH 500
 ENV GRAPHVIZZER_SLACK_APP_SECRET "MyMockSecret"
 ENV GRAPHVIZZER_SLACK_CLIENT_ID "29667068068.63519026177"
 ENV GRAPHVIZZER_TEMPORARY_GRAPH_FILE_DIRECTORY "/app/tmp/"
+## Remove to use the default error handler which spits all compile erros to browser
+ENV GRAPHVIZZER_CUSTOM_ERROR_HANDLER "common.error_handlers.ProdErrorHandler"
 
 ##############
 

@@ -1,4 +1,4 @@
-package filters.AccessLogAndTimerFilter
+package common.filters.AccessLogAndTimerFilter
 
 import javax.inject.Inject
 
