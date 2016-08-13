@@ -13,6 +13,10 @@ import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import scala.util.Try
 
 class AccessLogAndTimerFilter @Inject() (implicit val mat: Materializer) extends Filter{
+    val DONT_LOG_THESE_ACTIONS:List[String] = List(
+        "controllers.HealthCheckController.isAlive"
+    )
+
     def apply(nextFilter: RequestHeader => Future[Result])
              (requestHeader: RequestHeader): Future[Result] = {
 
@@ -28,11 +32,14 @@ class AccessLogAndTimerFilter @Inject() (implicit val mat: Materializer) extends
             val endTime = System.currentTimeMillis
             val requestTime = endTime - startTime
 
-            Logger.info(
-                s"ACCESS: ${requestHeader.method} ${requestHeader.path}, " +
-                s"Invoked: $action, " +
-                s"Took: ${requestTime}ms, " +
-                s"Returned: ${result.header.status}")
+
+            if(!DONT_LOG_THESE_ACTIONS.contains(action)) {
+                Logger.info(
+                    s"ACCESS: ${requestHeader.method} ${requestHeader.path}, " +
+                        s"Invoked: $action, " +
+                        s"Took: ${requestTime}ms, " +
+                        s"Returned: ${result.header.status}")
+            }
 
             result
         }
