@@ -1,0 +1,39 @@
+{
+  "containerDefinitions": [
+    {
+      "volumesFrom": [],
+      "memory": 750,
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 9000,
+          "protocol": "tcp"
+        }
+      ],
+      "essential": true,
+      "mountPoints": [],
+      "name": "Graphvizzer-play",
+      "environment": [
+        {
+          "name": "GRAPHVIZZER_SLACK_APP_SECRET",
+          "value": "foo"
+        },
+        {
+          "name": "GRAPHVIZZER_SLACK_AUTHENTICATION_TOKEN",
+          "value": "foo"
+        }
+      ],
+      "image": "objectivetruth/graphvizzer",
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/graphvizzer/ec2/graphvizzer-play",
+          "awslogs-region": "us-east-1"
+        }
+      },
+      "cpu": 768
+    }
+  ],
+  "volumes": [],
+  "family": "Graphvizzer"
+}
