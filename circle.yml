@@ -1,0 +1,27 @@
+machine:
+  java:
+    version: openjdk8
+  python:
+    version: 2.7.6
+  environment:
+    # GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
+
+dependencies:
+  override:
+    - ./activator compile
+  pre:
+    - pip install awscli
+  post:
+    # Copy the standard debug keystore to the CI, ensuring all app have the same certificate
+    - cp app/debug.keystore ~/.android/
+  cache_directories:
+    - ~/.sbt
+
+test:
+  post:
+
+notify:
+  webhooks:
+    # When build completes, send the Device Farm server the results so it can decide if a release is a good idea
+    # - url: https://2yfzoqajr9.execute-api.us-east-1.amazonaws.com/prod/circlecibuildfinishwebhook
+
