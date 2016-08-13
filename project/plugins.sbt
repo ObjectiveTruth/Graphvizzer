@@ -19,3 +19,6 @@ addSbtPlugin("org.irundaia.sbt" % "sbt-sassify" % "1.4.2")
 
 // Gatling Test Plugin
 addSbtPlugin("io.gatling" % "gatling-sbt" % "2.2.0")
+
+// Coverage reporting
+addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.3.5")
