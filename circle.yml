@@ -3,22 +3,50 @@ machine:
     version: openjdk8
   python:
     version: 2.7.6
+  services:
+    - docker
   environment:
     # GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
 
 dependencies:
   override:
-    - ./activator compile
+    - docker info
+    - sbt universal:packageZipTarball
+    - docker build -t objectivetruth/graphvizzer:latest .
+
   pre:
     - pip install awscli
   post:
-    # Copy the standard debug keystore to the CI, ensuring all app have the same certificate
-    - cp app/debug.keystore ~/.android/
+    # Used to parse JSON in bash
+    - sudo apt-get install -y jq
   cache_directories:
     - ~/.sbt
+    - ~/.ivy2
+    # Makes sbt resolution faster
+    - target/resolution-cache
+    - target/streams
+    - project/target/resolution-cache
+    - project/target/streams
 
 test:
+  override:
+    - sbt test
   post:
+    - cp -rv target/test-reports $CIRCLE_TEST_REPORTS/junit
+
+deployment:
+  production:
+    branch: master
+    commands:
+      # Push the new docker image to docker hub
+      - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+      - docker push objectivetruth/graphvizzer:latest
+      # Prepare the task definition JSON for AWS ECS
+      - cat "aws_deploy/task-definitions.json" | jq ".containerDefinitions[0].environment[0].value = \"${GRAPHVIZZER_SLACK_APP_SECRET}\"" | jq ".containerDefinitions[0].environment[1].value = \"${GRAPHVIZZER_SLACK_AUTHENTICATION_TOKEN}\"" > /tmp/new_task_definition.json
+      # Update the task definition and get the ARN into an env variable
+      - aws ecs register-task-definition --cli-input-json file:///tmp/new_task_definition.json --query "taskDefinition.taskDefinitionArn" --output text > /tmp/new_task_definition_arn
+      - cat /tmp/new_task_definition_arn
+      - aws ecs update-service --service "Graphvizzer-app" --cluster MainCluster --task-definition "$(cat /tmp/new_task_definition_arn)" --query "service.deployments[*]"
 
 notify:
   webhooks:

@@ -24,3 +24,7 @@ libraryDependencies ++= Seq(
     "io.gatling.highcharts" % "gatling-charts-highcharts" % "2.2.2" % Test,
     "io.gatling"            % "gatling-test-framework"    % "2.2.2" % Test
 )
+
+// Removes API Docs from binary
+sources in (Compile, doc) := Seq.empty
+publishArtifact in (Compile, packageDoc) := false

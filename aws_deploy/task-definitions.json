@@ -2,7 +2,7 @@
   "containerDefinitions": [
     {
       "volumesFrom": [],
-      "memory": 750,
+      "memory": 600,
       "portMappings": [
         {
           "hostPort": 80,
@@ -31,7 +31,7 @@
           "awslogs-region": "us-east-1"
         }
       },
-      "cpu": 768
+      "cpu": 600
     }
   ],
   "volumes": [],
