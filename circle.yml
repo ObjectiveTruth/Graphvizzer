@@ -5,8 +5,6 @@ machine:
     version: 2.7.6
   services:
     - docker
-  environment:
-    # GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
 
 dependencies:
   override:
@@ -30,9 +28,11 @@ dependencies:
 
 test:
   override:
-    - sbt test
+    - sbt test coverage coverageReport
   post:
     - cp -rv target/test-reports $CIRCLE_TEST_REPORTS/junit
+    - cp -rv target/scala-2.11/scoverage-report $CIRCLE_ARTIFACTS
+    - bash <(curl -s https://codecov.io/bash)
 
 deployment:
   production:
@@ -47,9 +47,3 @@ deployment:
       - aws ecs register-task-definition --cli-input-json file:///tmp/new_task_definition.json --query "taskDefinition.taskDefinitionArn" --output text > /tmp/new_task_definition_arn
       - cat /tmp/new_task_definition_arn
       - aws ecs update-service --service "Graphvizzer-app" --cluster MainCluster --task-definition "$(cat /tmp/new_task_definition_arn)" --query "service.deployments[*]"
-
-notify:
-  webhooks:
-    # When build completes, send the Device Farm server the results so it can decide if a release is a good idea
-    # - url: https://2yfzoqajr9.execute-api.us-east-1.amazonaws.com/prod/circlecibuildfinishwebhook
-
