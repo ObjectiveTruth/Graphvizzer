@@ -41,9 +41,7 @@ deployment:
       # Push the new docker image to docker hub
       - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
       - docker push objectivetruth/graphvizzer:latest
-      # Prepare the task definition JSON for AWS ECS
-      - cat "aws_deploy/task-definitions.json" | jq ".containerDefinitions[0].environment[0].value = \"${GRAPHVIZZER_SLACK_APP_SECRET}\"" | jq ".containerDefinitions[0].environment[1].value = \"${GRAPHVIZZER_SLACK_AUTHENTICATION_TOKEN}\"" > /tmp/new_task_definition.json
-      # Update the task definition and get the ARN into an env variable
-      - aws ecs register-task-definition --cli-input-json file:///tmp/new_task_definition.json --query "taskDefinition.taskDefinitionArn" --output text > /tmp/new_task_definition_arn
-      - cat /tmp/new_task_definition_arn
-      - aws ecs update-service --service "Graphvizzer-app" --cluster MainCluster --task-definition "$(cat /tmp/new_task_definition_arn)" --query "service.deployments[*]"
+      # Get the instance ID that is currently hosting the MiniDoAllServer
+      - INSTANCE_ID=$(aws ec2 describe-instances --filters Name=ip-address,Values=52.0.80.169 --output text --query 'Reservations[0].Instances[0].InstanceId')
+      # Terminate the instance
+      - aws ec2 terminate-instances --instance-ids $INSTANCE_ID
