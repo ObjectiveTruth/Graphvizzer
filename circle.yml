@@ -42,6 +42,7 @@ deployment:
       - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
       - docker push objectivetruth/graphvizzer:latest
       # Get the instance ID that is currently hosting the MiniDoAllServer
-      - INSTANCE_ID=$(aws ec2 describe-instances --filters Name=ip-address,Values=52.0.80.169 --output text --query 'Reservations[0].Instances[0].InstanceId')
+      - aws ec2 describe-instances --filters Name=ip-address,Values=52.0.80.169 --output text --query 'Reservations[0].Instances[0].InstanceId' > /tmp/instance_id
+      - cat /tmp/instance_id
       # Terminate the instance
-      - aws ec2 terminate-instances --instance-ids $INSTANCE_ID
+      - aws ec2 terminate-instances --instance-ids $(cat /tmp/instance_id)
