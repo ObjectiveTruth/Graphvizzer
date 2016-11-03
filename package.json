@@ -1,0 +1,27 @@
+{
+  "name": "graphvizzer",
+  "version": "1.0.0",
+  "description": "Graphviz graphs with imgur link instantly in your slack channel, Awesome!",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ObjectiveTruth/Graphviz-Slack-App.git"
+  },
+  "keywords": [
+    "graphvizzer",
+    "graphviz",
+    "dot"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ObjectiveTruth/Graphviz-Slack-App/issues"
+  },
+  "homepage": "https://github.com/ObjectiveTruth/Graphviz-Slack-App#readme"
+}
