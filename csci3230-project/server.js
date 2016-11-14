@@ -1,4 +1,3 @@
-'use strict';
 var express = require('express');
 var exec = require('child_process').exec;
 var bodyParser = require('body-parser');
@@ -51,5 +50,5 @@ app.post('/process_dot', function(req, res) {
 
 
 app.listen(3000, function () {
-    console.log('Example app listening on port 3000!');
+    console.log('Listening on port 3000!');
 });
