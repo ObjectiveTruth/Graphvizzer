@@ -30,7 +30,7 @@ test:
         pwd:
           csci3230-project
   post:
-    - codecov
+    - codecov:
         pwd:
           csci3230-project
 
