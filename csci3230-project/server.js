@@ -1,7 +1,8 @@
+'use strict';
 var express = require('express');
 var exec = require('child_process').exec;
 var bodyParser = require('body-parser');
-var imgur = require('imgur'); //TODO: npm instal --save imgur
+var imgur = require('imgur');
 
 var app = express();
 
