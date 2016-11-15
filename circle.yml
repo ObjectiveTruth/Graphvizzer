@@ -25,6 +25,9 @@ test:
     - npm test:
         pwd:
           csci3230-project
+    - npm run-script check-style:
+        pwd:
+          csci3230-project
 
 deployment:
   production:

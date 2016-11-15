@@ -6,7 +6,8 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha -R spec spec.js"
+    "test": "mocha -R spec spec.js",
+    "check-style": "jscs server.js"
   },
   "repository": {
     "type": "git",
@@ -30,6 +31,7 @@
     "imgur": "^0.1.7"
   },
   "devDependencies": {
+    "jscs": "^3.0.7",
     "mocha": "^3.1.2",
     "supertest": "^2.0.1"
   }
