@@ -16,16 +16,21 @@ dependencies:
   override:
     - pip install awscli
     - docker info
+    - npm install codecov --global
     - npm install:
         pwd:
           csci3230-project
 
 test:
   override:
-    - npm test:
+    - npm run-script test-with-coverage-report:
         pwd:
           csci3230-project
     - npm run-script check-style:
+        pwd:
+          csci3230-project
+  post:
+    - codecov
         pwd:
           csci3230-project
 
