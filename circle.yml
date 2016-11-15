@@ -22,7 +22,9 @@ dependencies:
 
 test:
   override:
-    - npm test
+    - npm test:
+        pwd:
+          csci3230-project
 
 deployment:
   production:
