@@ -4,56 +4,60 @@ var express = require('express');
 var exec = require('child_process').exec;
 var bodyParser = require('body-parser');
 var imgur = require('imgur');
+var fs = require('fs');
 
 var app = express();
+const STATE_SUCCESS = 0;
+const STATE_FAILURE = 1;
 
-app.use(bodyParser.urlencoded({ extended:false })); //just look for name=value kind of data.
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
-app.get('/', function (req, res) {
-    res.send('Hello, world!');
-});
 
 app.get('/isAlive', function (req, res) {
     res.send('Yup, it\'s alive!');
 });
 
-app.get('/dot', function(request, response) {
-	response.sendFile(__dirname + '/dot-input.html');
-});
+app.post('/processDOT', function (req, res) {
+    console.log(req.body);
 
-app.post('/process_dot', function(req, res) {
-    //console.log(req.body);
-    
-    //res.send('Your command was submitted. You\'ll be redirected to your image in a few seconds.');
-    //var dot = '"graph {a -- b -- d -- c -- f[color=red,penwidth=3.0]; b -- c; d -- e; e -- f; a -- d; }"';
-    var dot = '"'+req.body['command']+'"';
-    var filename = req.body['filename'];
-    var cmd = 'echo ' + dot + ' | dot -Tpng -o ./' + filename;
-    var link;
-    var imgur_cmd;
-    
-    //Print the command entered
-    console.log('Command entered: ' + req.body['command']);
-    
-    //Upload to imgur using its API
-    imgur.uploadFile('./' + filename)
-        .then(function (json) {
-            link = json.data.link;
-            console.log(link);
-            //res.redirect(link + '.png');
-        
-            var imgur_cmd = 'open ' + link;
+    const filenameBasedOnCurrentUnixTime = 'temp/' + Date.now() + '.png';
 
-            exec(imgur_cmd, function(error, stdout, stderr) {
+    var command = 'echo "' + req.body.inputDOTString + '" | dot -Tpng -o ' + filenameBasedOnCurrentUnixTime;
 
-                if(error) { console.log(error); }
-                
-                res.send('Your command was received. You will be promped to it\'s link in a few seconds.');
+    exec(command, function (error, stdout, stderr) {
+        if (error) {
+            console.log(error);
+            res.send({
+                state: STATE_FAILURE,
+                message: 'Error processing your dot string'
             });
-        })
-        .catch(function (err) { console.error('Error: ' + err.message); });
+        }else {
+            imgur.uploadFile('./' + filenameBasedOnCurrentUnixTime)
+                .then(function (result) {
+                    var link = result.data.link;
+                    console.log('Upload to imgur Succeeded, link: ' + link);
+                    res.send({
+                        state: STATE_SUCCESS,
+                        data: {
+                            link: link
+                        }
+                    });
+                })
+                .catch(function (err) {
+                    console.error('Error: ' + err.message);
+                    res.send({
+                        state: STATE_FAILURE,
+                        message: 'Error while uploading to imgur'
+                    });
+                })
+                .done(function () {
+                    fs.unlink(filenameBasedOnCurrentUnixTime);
+                });
+        }
+    });
 });
+
+app.use('/', express.static('static'));
 
 var server = app.listen(3000, function () {
     console.log('Listening on port 3000!');
