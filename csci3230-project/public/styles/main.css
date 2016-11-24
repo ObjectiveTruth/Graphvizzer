@@ -1,51 +1,145 @@
-html {
-  	position: relative;
-  	min-height: 100%;
+h1 {
+	padding-top: 10px;
+	padding-bottom: 40px;
+	text-align: center;
+	color: #19B99A;
 }
 
-body {
-  	/* Margin bottom by footer height */
-  	margin-bottom: 60px;
-	padding-top: 80px;
+p, h2 {
+	color: black;
 }
 
-#title, #message {
-	margin-top: 20px;
-	margin-bottom: 30px;
+#result {
+	margin-top: 50px;
+	margin-bottom: 50px;
 	text-align: center;
 }
 
-#form-wrapper label {
-	text-align: right;
-}
-
-.footer {
+#button-div {
 	text-align: center;
-	position: absolute;
-	bottom: 0;
-	width: 100%;
-	/* Set the fixed height of the footer here */
-	height: 60px;
-	background-color: #19B99A;
 }
 
-
-
-.container {
-  	width: auto;
-  	max-width: 680px;
-  	padding: 0 15px;
-}
-
-.container .text-muted {
-  	margin: 20px 0;
-	color: #F0F0F0;
-}
-
-a:hover {
-	text-decoration: none;
-}
-
-#debugging {
+#test {
 	height: 1000px;
+}
+
+div#main-background {
+	margin-top: 30px;
+	width: 100%;
+	background-color:#33DEBD;
+	padding: 45px 150px 45px 150px;
+}
+
+img#btn-slack-add {
+	max-height: 50px;
+	min-height: 20px;
+}
+
+img#demo-laptop {
+	max-height: 250px;
+}
+
+#header-text{
+	margin-top: 10px;
+	font-size: 300%;
+	text-align: center;
+	font-weight: lighter;
+}
+
+#brand-image {
+	max-height: 300%;
+	width: auto;
+}
+
+#brand-text {
+	color: black;
+	font-size: 135%;
+}
+
+nav.navbar-custom {
+	background-color: transparent;
+	background: transparent;
+	border-color: transparent;
+	background-image: none;
+	box-shadow: none;
+	border-bottom: 0px;
+
+	margin-left: 50px;
+	margin-right: 50px;
+}
+
+ul.navbar-nav > li > a {
+	background-color: transparent !important;
+	color: black !important;
+	font-size: 90%;
+	text-transform: uppercase;
+	font-weight: 450;
+	letter-spacing: 1px;
+}
+
+ul.navbar-nav > li > a:hover {
+	cursor: pointer;
+}
+
+ul.header a.active {
+	border-bottom: #33DEBD solid 2px;
+}
+
+div.general-content {
+	padding-left: 100px;
+	padding-right: 100px;
+}
+
+.img-responsive {
+    margin: 0 auto;
+}
+
+.footer{
+	text-align: center;
+}
+
+.a-link:hover {
+	text-decoration: none !important;
+}
+
+#page-content {
+	margin-top: 50px;
+	padding-bottom: 100px;
+}
+
+.block-img {
+	max-width: 80px;
+	height: auto;
+}
+
+div.index-block {
+	text-align: center;
+	margin-bottom: 40px;
+}
+
+#featurettes-wrapper {
+	padding-left: 70px;
+}
+
+.featurette-heading {
+	padding-top: 50px;
+}
+
+/* xs < 768 */
+@media screen and (max-width: 767px) {
+    #main-background {
+        font-size: 0.8em;
+    }
+	
+	#page-content h1 {
+		font-size: 1.9em;
+	}
+	
+}
+
+/* md */
+@media screen and (min-width: 992px) {
+	#main-background  {
+        font-size: 1.1em;
+    }
 }

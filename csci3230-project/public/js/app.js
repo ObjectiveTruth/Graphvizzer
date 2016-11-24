@@ -1,4 +1,5 @@
 $(document).ready(function () {
+	
     $('#create-link-button').click(function (event) {
         event.preventDefault();
         var inputDOTString = $('#input-DOT-string').val();
@@ -8,6 +9,10 @@ $(document).ready(function () {
         $.post('/processDOT', { inputDOTString: inputDOTString })
             .then(function (result) {
                 console.log(result.data.link);
+				//$('#message').html(result.data.link);
+				$('#result').html('<img src="'+result.data.link+'"><br>')
+							.append(result.data.link);
+
             })
             .catch(function (error) {
                 //TODO handle me!!!!

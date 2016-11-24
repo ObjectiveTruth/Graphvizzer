@@ -28,17 +28,20 @@ app.set('view engine', 'pug');
 mongoose.connect('localhost:27017/userComments');
 
 app.get('/', function (req, res) {
-	res.render('index');
-});
-
-app.get('/isAlive', function (req, res) {
-    res.send('Yup, it\'s alive!');
+	res.render('index', {title: 'Home', nav: 'home'});
 });
 
 app.get('/processDOT', function(req, res) {
-    res.render('dot-input', {title:'Graphizzer'})
+    res.render('dot-input', {title: 'DOT', nav:'dot'})
 });
 
+app.get('/reviews', function (req, res) {
+	res.render('reviews', {title: 'Reviews', nav:'review'});
+});
+
+/*
+digraph { main -> parse -> execute; main -> init; main -> cleanup; execute -> make_string; execute -> printf; init -> make_string; main -> printf; execute -> compare;}
+*/
 app.post('/processDOT', function(req, res) {
 
 	console.log(req.body);

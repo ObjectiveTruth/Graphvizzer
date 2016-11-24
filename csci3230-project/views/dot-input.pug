@@ -2,25 +2,28 @@ extends layout
 
 block content
 	body
-		h1(id="title") Graphvizzer
+		h1 DOT Command Processor
+		div(class="general-content")
+			h2 How does it work?
+			p Bla bla bla
+			br
+	
 		div(id="form-wrapper")
 			form(method="post", class="form-horizonal")
-				label(class="control-label col-sm-2",for="command") DOT Command:
-				div(class="col-sm-10 form-group")
+				div(class="col-md-offset-3 col-md-6 form-group")
 					input(type="text",
 						id="input-DOT-string",
 						name="command",
-						value="graph {a -- b -- d -- c -- f[color=red,penwidth=3.0]; b -- c; d -- e; e -- f; a -- d; }",
+						placeholder="Enter a DOT command",
 						class="form-control")
 
 				div(class="clearfix hidden-sm-up")
 
-				div(class="col-sm-offset-5 col-sm-1")
-					button(type="submit",id="create-link-button",class="btn btn-primary") Submit
+				div(id="button-div")
+					button(type="submit",id="create-link-button", class="btn btn-primary") Submit
 
-				div(class="clearfix hidden-sm-up")
+		div(class="clearfix hidden-sm-up")
 
-				if (message)
-					div(class="col-sm-11", id="message")= message
+		div(id="result")
 		
-		div(id="debugging")
+		div(id="test")
