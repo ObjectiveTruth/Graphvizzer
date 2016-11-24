@@ -6,7 +6,8 @@ var rb = require('request-promise');
 var createImgurLinkForDotString = function (request, response) {
     console.log(request.body);
 
-    const TEMPORARY_GRAPHVIZ_FILE_PATH = config.TEMPORARY_GRAPH_FILE_DIRECTORY + Date.now() + '.png';
+    const TEMPORARY_GRAPHVIZ_FILE_PATH = config.general.TEMPORARY_GRAPH_FILE_DIRECTORY + Date.now() + '.png';
+    console.log(TEMPORARY_GRAPHVIZ_FILE_PATH);
 
     var inputDotString = request.body.text;
     var inputToken = request.body.token;
@@ -31,7 +32,7 @@ var createImgurLinkForDotString = function (request, response) {
         });
     }
 
-    var command = 'echo "' + request.body.inputDOTString + '" | dot -Tpng -o ' + TEMPORARY_GRAPHVIZ_FILE_PATH;
+    var command = 'echo "' + request.body.text + '" | dot -Tpng -o ' + TEMPORARY_GRAPHVIZ_FILE_PATH;
 
     exec(command, function (error, stdout, stderr) {
         if (error) {
