@@ -4,15 +4,36 @@ var express = require('express');
 var exec = require('child_process').exec;
 var bodyParser = require('body-parser');
 var imgur = require('imgur');
+var mongoose = require('mongoose');
+var favicon = require('serve-favicon');
 var fs = require('fs');
 var config = require('./app/config.js');
 
 var app = express();
-const STATE_SUCCESS = 0;
-const STATE_FAILURE = 1;
+
+app.use(favicon(__dirname + '/public/images/favicon.ico'));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+app.use(express.static('public'));
+
+app.set('views', __dirname + '/views');
+app.set('view engine', 'pug');
+
+//mongoose.connect('localhost:27017/userComments');
+
+app.get('/', function (req, res) {
+    res.render('index', { title: 'Home', nav: 'home' });
+});
+
+app.get('/processDOT', function (req, res) {
+    res.render('dot-input', { title: 'DOT', nav: 'dot' });
+});
+
+app.get('/reviews', function (req, res) {
+    res.render('reviews', { title: 'Reviews', nav: 'review' });
+});
 
 app.get('/isAlive', function (req, res) {
     res.send('Yup, it\'s alive!');
@@ -61,8 +82,6 @@ app.post('/processDOT', function (req, res) {
         }
     });
 });
-
-app.use('/', express.static('public'));
 
 var server = app.listen(9000, function () {
     console.log('Listening on port 9000!');
