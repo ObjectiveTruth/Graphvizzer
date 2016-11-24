@@ -1,0 +1,28 @@
+extends layout
+
+block content
+	body
+		div(class="general-content")
+			h2 How does it work?
+			p Enter your command below to get your graph image. The only requirement: Make sure it's a valid DOT command!
+			br
+	
+		div(id="form-wrapper")
+			form(method="post", class="form-horizonal")
+				div(class="col-md-offset-3 col-md-6 form-group")
+					input(type="text",
+						id="input-DOT-string",
+						name="command",
+						placeholder="Enter a DOT command",
+						class="form-control")
+
+				div(class="clearfix hidden-sm-up")
+
+				div(id="button-div")
+					button(type="submit",id="create-link-button", class="btn btn-primary") Submit
+
+		div(class="clearfix hidden-sm-up")
+
+		div(id="result")
+		
+		div(id="test")
