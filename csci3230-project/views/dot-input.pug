@@ -5,18 +5,18 @@ block content
 		h1(id="title") Graphvizzer
 		div(id="form-wrapper")
 			form(method="post", class="form-horizonal")
-				label(class="control-label col-sm-3",for="command") DOT command:
-				div(class="col-sm-9 form-group")
+				label(class="control-label col-sm-2",for="command") DOT Command:
+				div(class="col-sm-10 form-group")
 					input(type="text",
-						id="command",
+						id="input-DOT-string",
 						name="command",
 						value="graph {a -- b -- d -- c -- f[color=red,penwidth=3.0]; b -- c; d -- e; e -- f; a -- d; }",
 						class="form-control")
 
 				div(class="clearfix hidden-sm-up")
 
-				div(class="col-sm-offset-3 col-sm-1")
-					button(type="submit",class="btn btn-primary") Submit
+				div(class="col-sm-offset-5 col-sm-1")
+					button(type="submit",id="create-link-button",class="btn btn-primary") Submit
 
 				div(class="clearfix hidden-sm-up")
 
