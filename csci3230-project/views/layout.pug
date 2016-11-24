@@ -1,0 +1,61 @@
+doctype
+html
+	head
+		block title
+			title= title
+
+			link(rel="stylesheet", href="http://v4-alpha.getbootstrap.com/examples/sticky-footer-navbar/sticky-footer-navbar.css")
+
+			link(rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css",  integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7", crossorigin="anonymous")
+
+			link(rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css", integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r", crossorigin="anonymous")
+			
+			script(src="https://code.jquery.com/jquery-3.1.1.min.js", integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=", crossorigin="anonymous")
+			script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js", integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa", crossorigin="anonymous")
+			
+			script(src="/js/app.js")
+			link(rel="stylesheet", href="/styles/main.css")
+			
+	body
+		nav(class="navbar navbar-default navbar-custom")
+			div(class="navbar-header")
+				button(type="button", class="navbar-toggle", data-toggle="collapse", data-target="#mynavbar", aria-expanded="false", aria-controls="navbar")
+					span(class="icon-bar")
+					span(class="icon-bar")
+					span(class="icon-bar")
+				a(class="navbar-brand", href="#")
+					div(class="container-fluid")
+						ul(class="list-inline")
+							li
+								img(src="images/logo.png", id="brand-image")
+							li(class="hidden-xs hidden-sm")
+								p(id="brand-text") Graphvizzer
+
+
+			div(class="collapse navbar-collapse", id="mynavbar")
+				ul(class="nav navbar-nav pull-right header")
+
+					li
+						a(href="/", class=(nav === 'home')? "active" : "") About
+					li
+						a(href="/processDOT", class=(nav === 'dot')? "active" : "") Try It
+					li
+						a(href="/reviews", class=(nav === 'review')? "active" : "") Reviews
+
+		div(id="main-background", class="container-fluid")
+			div(class="row")
+				div(class="hidden-xs hidden-sm col-md-6")
+					img(id="demo-laptop", src="/images/graphvizzer_demo.png")
+				div(class="col-xs-12 col-md-offset-1 col-md-5", id="header-right")
+					p(id="header-text") Graph instantly in your Slack channel!
+					br
+					a(href="https://slack.com/oauth/authorize?scope=commands&client_id=29667068068.63519026177")
+						img(id="btn-slack-add", src="/images/btn_slack_add.png", class="img-responsive")
+
+		div(id="page-content")
+			block content
+		
+		block footer
+			footer(class="footer")
+				div(class="container")
+					span(class="text-muted") &copy; 2016 Graphvizzer. &nbsp; &nbsp; &nbsp; #[a(href="http://choosealicense.com/licenses/gpl-3.0/#", class="a-link") License] &nbsp; #[a(href="https://github.com/ObjectiveTruth/Graphvizzer", class="a-link") Github]
