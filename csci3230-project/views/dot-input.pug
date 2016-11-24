@@ -1,0 +1,26 @@
+extends layout
+
+block content
+	body
+		h1(id="title") Graphvizzer
+		div(id="form-wrapper")
+			form(method="post", class="form-horizonal")
+				label(class="control-label col-sm-3",for="command") DOT command:
+				div(class="col-sm-9 form-group")
+					input(type="text",
+						id="command",
+						name="command",
+						value="graph {a -- b -- d -- c -- f[color=red,penwidth=3.0]; b -- c; d -- e; e -- f; a -- d; }",
+						class="form-control")
+
+				div(class="clearfix hidden-sm-up")
+
+				div(class="col-sm-offset-3 col-sm-1")
+					button(type="submit",class="btn btn-primary") Submit
+
+				div(class="clearfix hidden-sm-up")
+
+				if (message)
+					div(class="col-sm-11", id="message")= message
+		
+		div(id="debugging")
