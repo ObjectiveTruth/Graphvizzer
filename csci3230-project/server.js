@@ -20,6 +20,8 @@ app.get('/isAlive', function (req, res) {
 
 app.post('/createImgurLinkForDOTString', require('./app/routes/createImgurLinkForDotString.js'));
 
+app.get('/register', require('./app/routes/register.js'));
+
 app.post('/processDOT', function (req, res) {
     console.log(req.body);
 
@@ -62,8 +64,8 @@ app.post('/processDOT', function (req, res) {
 
 app.use('/', express.static('static'));
 
-var server = app.listen(3000, function () {
-    console.log('Listening on port 3000!');
+var server = app.listen(9000, function () {
+    console.log('Listening on port 9000!');
 });
 
 module.exports = server;

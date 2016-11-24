@@ -10,7 +10,8 @@ config.slack = {
     SLACK_APP_SECRET: process.env.GRAPHVIZZER_SLACK_APP_SECRET || 'mocksecret',
     SLACK_CLIENT_ID: process.env.GRAPHVIZZER_SLACK_CLIENT_ID || '29667068068.63519026177',
     EPHEMERAL_RESPONSE_TYPE: 'ephemeral',
-    CHANNEL_RESPONSE_TYPE: 'in_channel'
+    CHANNEL_RESPONSE_TYPE: 'in_channel',
+    OAUTH_ENDPOINT: 'https://slack.com/api/oauth.access'
 };
 
 config.general = {
