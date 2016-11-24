@@ -45,10 +45,12 @@ app.get('/register', require('./app/routes/register.js'));
 
 app.post('/processDOT', function (req, res) {
     console.log(req.body);
+    const STATE_FAILURE = 1;
+    const STATE_SUCCESS = 0;
 
-    const filenameBasedOnCurrentUnixTime = 'temp/' + Date.now() + '.png';
+    const TEMPORARY_GRAPHVIZ_FILE_PATH = config.general.TEMPORARY_GRAPH_FILE_DIRECTORY + Date.now() + '.png';
 
-    var command = 'echo "' + req.body.inputDOTString + '" | dot -Tpng -o ' + filenameBasedOnCurrentUnixTime;
+    var command = 'echo "' + req.body.inputDOTString + '" | dot -Tpng -o ' + TEMPORARY_GRAPHVIZ_FILE_PATH;
 
     exec(command, function (error, stdout, stderr) {
         if (error) {
@@ -58,7 +60,7 @@ app.post('/processDOT', function (req, res) {
                 message: 'Error processing your dot string'
             });
         }else {
-            imgur.uploadFile('./' + filenameBasedOnCurrentUnixTime)
+            imgur.uploadFile(TEMPORARY_GRAPHVIZ_FILE_PATH)
                 .then(function (result) {
                     var link = result.data.link;
                     console.log('Upload to imgur Succeeded, link: ' + link);
@@ -77,7 +79,7 @@ app.post('/processDOT', function (req, res) {
                     });
                 })
                 .done(function () {
-                    fs.unlink(filenameBasedOnCurrentUnixTime);
+                    fs.unlink(TEMPORARY_GRAPHVIZ_FILE_PATH);
                 });
         }
     });
