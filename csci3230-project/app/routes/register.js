@@ -16,6 +16,8 @@ var register = function (request, response) {
         }else {
             response.send(config.messages.SystemMessages.UnexpectedSystemError);
         }
+    }).catch(function (error) {
+        response.send(config.messages.SystemMessages.UnexpectedSystemError);
     });
 };
 
