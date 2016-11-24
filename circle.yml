@@ -20,6 +20,7 @@ dependencies:
     - npm install:
         pwd:
           csci3230-project
+    - docker build -t objectivetruth/graphvizzer:latest .
 
 test:
   override:
