@@ -28,7 +28,7 @@ describe('loading express', function () {
         request(server)
             .post('/createImgurLinkForDOTString')
             .send({
-                token: 'abc123',
+                token: 'mocktoken',
                 team_id: 'fake_team',
                 team_domain: 'fake_domain',
                 channel_id: 'abc1234',

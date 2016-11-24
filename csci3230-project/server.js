@@ -5,6 +5,7 @@ var exec = require('child_process').exec;
 var bodyParser = require('body-parser');
 var imgur = require('imgur');
 var fs = require('fs');
+var config = require('./app/config.js');
 
 var app = express();
 const STATE_SUCCESS = 0;
@@ -16,6 +17,8 @@ app.use(bodyParser.json());
 app.get('/isAlive', function (req, res) {
     res.send('Yup, it\'s alive!');
 });
+
+app.post('/createImgurLinkForDOTString', require('./app/routes/createImgurLinkForDotString.js'));
 
 app.post('/processDOT', function (req, res) {
     console.log(req.body);
