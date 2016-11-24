@@ -62,7 +62,7 @@ app.post('/processDOT', function (req, res) {
     });
 });
 
-app.use('/', express.static('static'));
+app.use('/', express.static('public'));
 
 var server = app.listen(9000, function () {
     console.log('Listening on port 9000!');
