@@ -1,7 +1,7 @@
 # Created by https://www.gitignore.io/api/vim,intellij,osx,windows,linux,node
 
 ## Custom ##
-tmp/*.png
+csci3230-project/temp/*.png
 
 ### Node ###
 # Logs
