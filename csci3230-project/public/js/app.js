@@ -9,7 +9,6 @@ $(document).ready(function () {
         $.post('/processDOT', { inputDOTString: inputDOTString })
             .then(function (result) {
                 console.log(result.data.link);
-				//$('#message').html(result.data.link);
 				$('#result').html('<img src="'+result.data.link+'"><br>')
 							.append(result.data.link);
 
