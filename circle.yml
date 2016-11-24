@@ -2,42 +2,38 @@ general:
   branches:
     only:
       - master
+      - webapp_master
 
 machine:
-  java:
-    version: openjdk8
   python:
     version: 2.7.6
+  node:
+    version: v6.1.0
   services:
     - docker
 
 dependencies:
   override:
-    - docker info
-    - sbt universal:packageZipTarball
-    - docker build -t objectivetruth/graphvizzer:latest .
-
-  pre:
     - pip install awscli
-  post:
-    # Used to parse JSON in bash
-    - sudo apt-get install -y jq
-  cache_directories:
-    - ~/.sbt
-    - ~/.ivy2
-    # Makes sbt resolution faster
-    - target/resolution-cache
-    - target/streams
-    - project/target/resolution-cache
-    - project/target/streams
+    - docker info
+    - npm install codecov --global
+    - npm install:
+        pwd:
+          csci3230-project
+    - docker build -t objectivetruth/graphvizzer:latest .
 
 test:
   override:
-    - sbt coverage test coverageReport
+    - npm run-script test-with-coverage-report:
+        pwd:
+          csci3230-project
+    - npm run-script check-style:
+        pwd:
+          csci3230-project
   post:
-    - cp -rv target/test-reports $CIRCLE_TEST_REPORTS/junit
-    - cp -rv target/scala-2.11/scoverage-report $CIRCLE_ARTIFACTS
-    - bash <(curl -s https://codecov.io/bash)
+    - codecov:
+        pwd:
+          csci3230-project
 
 deployment:
   production:

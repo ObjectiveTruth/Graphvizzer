@@ -47,6 +47,10 @@ Simply import the project based on an `sbt` model to get started
 
 `activator test`
 
+### Nodejs Deployment
+
+`node index.js`
+
 ### Building the docker
 
 1. Package the `Play2!-Scala` app
