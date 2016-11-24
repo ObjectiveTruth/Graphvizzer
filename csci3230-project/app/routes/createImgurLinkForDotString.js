@@ -2,6 +2,7 @@ var config = require('../config.js');
 var imgur = require('imgur');
 var exec = require('child_process').exec;
 var rb = require('request-promise');
+var fs = require('fs');
 
 var createImgurLinkForDotString = function (request, response) {
     console.log(request.body);
