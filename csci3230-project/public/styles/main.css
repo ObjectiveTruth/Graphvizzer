@@ -111,7 +111,10 @@ div.index-block {
 
 #input-name {margin-top: 20px;}
 
-#all-comments {margin-top: 50px;}
+#all-comments {
+	margin-top: 50px;
+	min-width: 200px;
+}
 
 /* --- SCREEN-RESIZING RESPONSIVE -- */
 
