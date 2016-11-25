@@ -53,19 +53,20 @@ $(document).ready(function () {
         $.post('/processDOT', { inputDOTString: inputDOTString })
             .then(function (result) {
 				
-                console.log(result.data.link);
+                var link = result.data.link;
+				var secureLink = link.replace('http', 'https');
 			
 				pTag.addClass('success')
 					.text('Success! Scroll down to see your image.');
 			
 				$('#warning-dot').html(pTag);
 			
-				var imgTag = $('<img>').attr("src", result.data.link);
+				var imgTag = $('<img>').attr("src", secureLink);
 			
 				$('#result').html('')
 							.append(imgTag)
 							.append('<br><br>')
-							.append(result.data.link);
+							.append(secureLink);
 
             })
             .catch(function (error) {
