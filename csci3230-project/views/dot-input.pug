@@ -1,28 +1,23 @@
 extends layout
-
 block content
-	body
-		div(class="general-content")
-			h2 How does it work?
-			p Enter your command below to get your graph image. The only requirement: Make sure it's a valid DOT command!
-			br
-	
-		div(id="form-wrapper")
-			form(method="post", class="form-horizonal")
-				div(class="col-md-offset-3 col-md-6 form-group")
-					input(type="text",
-						id="input-DOT-string",
-						name="command",
-						placeholder="Enter a DOT command",
-						class="form-control")
+	div(class="centered")
+		h2 How does it work?
+		p As promised, it's very simple. Just enter your command below to get your graph image. The only requirement: Make sure it's valid DOT syntax!
+		br
 
-				div(class="clearfix hidden-sm-up")
+	form(method="post", class="form-horizonal")
 
-				div(id="button-div")
-					button(type="submit",id="create-link-button", class="btn btn-primary") Submit
+		div(class="centered")
+			div(class="col-md-offset-3 col-md-6 form-group")
+				input(type="text",
+					id="input-DOT-string",
+					name="command",
+					placeholder="Enter a DOT command. E.g.: digraph {a -> b; }).",
+					class="form-control")
 
-		div(class="clearfix hidden-sm-up")
+			div(class="clearfix hidden-sm-up")
+			div(class="centered warning-box", id="warning-dot")
 
-		div(id="result")
-		
-		div(id="test")
+			button(type="submit", id="create-link-button", class="btn btn-primary") Submit
+
+	div(id="result", class="centered")
