@@ -18,20 +18,29 @@ mongoose.connect('localhost:27017/userComments');
 
 var Schema = mongoose.Schema;
 
-var commentSchema = new Schema({username: {type:String,
-										  required:true},
-							   content: {type:String,
-										required:true},
-							   timestamp: String},
-							   {collection: 'comments'});
+var commentSchema = new Schema(
+    {
+        username: {
+            type: String,
+            required: true
+        },
+        content: {
+            type: String,
+            required: true
+        },
+        timestamp: String
+    },
+    {
+        collection: 'comments'
+    });
 
 var Comment = mongoose.model('comment', commentSchema);
 
 function loadAllComments(req, res, error) {
-	Comment.find().then(function(results) {
-		console.log('Results for ALL comments: ' + results);
-		res.send({allComments: results});			  
-	});
+    Comment.find().then(function (results) {
+        console.log('Results for ALL comments: ' + results);
+        res.send({ allComments: results });
+    });
 }
 
 app.use(favicon(__dirname + '/public/images/favicon.ico'));
@@ -98,42 +107,44 @@ app.post('/processDOT', function (req, res) {
                     });
                 })
                 .done(function () {
-                    fs.unlink(TEMPORARY_GRAPHVIZ_FILE_PATH, function() {});
+                    fs.unlink(TEMPORARY_GRAPHVIZ_FILE_PATH, function () {});
                 });
         }
     });
 });
 
 app.get('/reviews', function (req, res) {
-	res.render('reviews', {title: 'Reviews', nav:'review'});
+    res.render('reviews', { title: 'Reviews', nav: 'review' });
 });
 
-app.post('/loadAllComments', function(req, res) {
-	loadAllComments(req, res);
+app.post('/loadAllComments', function (req, res) {
+    loadAllComments(req, res);
 });
 
-app.post('/submitNewComment', function(req, res) {
-	
-	var username = req.body.username;
-	var commentContent = req.body.userInputComment;
-	var timestamp = req.body.timestamp;
+app.post('/submitNewComment', function (req, res) {
+    var username = req.body.username;
+    var commentContent = req.body.userInputComment;
+    var timestamp = req.body.timestamp;
 
-	//save comment locally
-	var newComment = new Comment({username: username,
-								 content: commentContent,
-								 timestamp: timestamp});
-	
-	//add to database
-	newComment.save(function(error) {
-		if (error) {
-			console.log(error);
-			res.send({state:STATE_FAILURE,
-					 message: 'Error processing your comment.'})
-		} else {
-			//loadAllComments(req, res);
-			res.send({state:STATE_SUCCESS});
-		}
-	});
+    //save comment locally
+    var newComment = new Comment({
+        username: username,
+        content: commentContent,
+        timestamp: timestamp
+    });
+
+    //add to database
+    newComment.save(function (error) {
+        if (error) {
+            console.log(error);
+            res.send({
+                state: STATE_FAILURE,
+                message: 'Error processing your comment.' });
+        } else {
+            res.send({
+                state: STATE_SUCCESS });
+        }
+    });
 });
 
 var server = app.listen(9000, function () {
