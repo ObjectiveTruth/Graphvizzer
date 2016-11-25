@@ -1,5 +1,4 @@
 'use strict';
-
 var express = require('express');
 var exec = require('child_process').exec;
 var bodyParser = require('body-parser');
@@ -11,6 +10,39 @@ var config = require('./app/config.js');
 
 var app = express();
 
+const STATE_SUCCESS = 0;
+const STATE_FAILURE = 1;
+
+//connect to database
+mongoose.connect('localhost:27017/userComments');
+
+var Schema = mongoose.Schema;
+
+var commentSchema = new Schema(
+    {
+        username: {
+            type: String,
+            required: true
+        },
+        content: {
+            type: String,
+            required: true
+        },
+        timestamp: String
+    },
+    {
+        collection: 'comments'
+    });
+
+var Comment = mongoose.model('comment', commentSchema);
+
+function loadAllComments(req, res, error) {
+    Comment.find().then(function (results) {
+        console.log('Results for ALL comments: ' + results);
+        res.send({ allComments: results });
+    });
+}
+
 app.use(favicon(__dirname + '/public/images/favicon.ico'));
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -20,8 +52,6 @@ app.use(express.static('public'));
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'pug');
-
-//mongoose.connect('localhost:27017/userComments');
 
 app.get('/', function (req, res) {
     res.render('index', { title: 'Home', nav: 'home' });
@@ -45,8 +75,6 @@ app.get('/register', require('./app/routes/register.js'));
 
 app.post('/processDOT', function (req, res) {
     console.log(req.body);
-    const STATE_FAILURE = 1;
-    const STATE_SUCCESS = 0;
 
     const TEMPORARY_GRAPHVIZ_FILE_PATH = config.general.TEMPORARY_GRAPH_FILE_DIRECTORY + Date.now() + '.png';
 
@@ -63,7 +91,7 @@ app.post('/processDOT', function (req, res) {
             imgur.uploadFile(TEMPORARY_GRAPHVIZ_FILE_PATH)
                 .then(function (result) {
                     var link = result.data.link;
-                    console.log('Upload to imgur Succeeded, link: ' + link);
+                    console.log('Upload to Imgur succeeded. Link: ' + link);
                     res.send({
                         state: STATE_SUCCESS,
                         data: {
@@ -79,8 +107,42 @@ app.post('/processDOT', function (req, res) {
                     });
                 })
                 .done(function () {
-                    fs.unlink(TEMPORARY_GRAPHVIZ_FILE_PATH);
+                    fs.unlink(TEMPORARY_GRAPHVIZ_FILE_PATH, function () {});
                 });
+        }
+    });
+});
+
+app.get('/reviews', function (req, res) {
+    res.render('reviews', { title: 'Reviews', nav: 'review' });
+});
+
+app.post('/loadAllComments', function (req, res) {
+    loadAllComments(req, res);
+});
+
+app.post('/submitNewComment', function (req, res) {
+    var username = req.body.username;
+    var commentContent = req.body.userInputComment;
+    var timestamp = req.body.timestamp;
+
+    //save comment locally
+    var newComment = new Comment({
+        username: username,
+        content: commentContent,
+        timestamp: timestamp
+    });
+
+    //add to database
+    newComment.save(function (error) {
+        if (error) {
+            console.log(error);
+            res.send({
+                state: STATE_FAILURE,
+                message: 'Error processing your comment.' });
+        } else {
+            res.send({
+                state: STATE_SUCCESS });
         }
     });
 });

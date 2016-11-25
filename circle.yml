@@ -11,6 +11,7 @@ machine:
     version: v6.1.0
   services:
     - docker
+    - mongodb
 
 dependencies:
   override:
