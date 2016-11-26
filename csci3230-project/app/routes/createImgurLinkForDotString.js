@@ -3,12 +3,10 @@ var imgur = require('imgur');
 var exec = require('child_process').exec;
 var rb = require('request-promise');
 var fs = require('fs');
+var logger = require('../logger.js');
 
 var createImgurLinkForDotString = function (request, response) {
-    console.log(request.body);
-
     const TEMPORARY_GRAPHVIZ_FILE_PATH = config.general.TEMPORARY_GRAPH_FILE_DIRECTORY + Date.now() + '.png';
-    console.log(TEMPORARY_GRAPHVIZ_FILE_PATH);
 
     var inputDotString = request.body.text;
     var inputToken = request.body.token;
@@ -37,7 +35,7 @@ var createImgurLinkForDotString = function (request, response) {
 
     exec(command, function (error, stdout, stderr) {
         if (error) {
-            console.log(error);
+            logger.error(error, 'Error processing the DOT file');
             rb({
                 method: 'POST',
                 uri: responseURL,
@@ -51,7 +49,7 @@ var createImgurLinkForDotString = function (request, response) {
             imgur.uploadFile(TEMPORARY_GRAPHVIZ_FILE_PATH)
                 .then(function (response) {
                     var link = response.data.link;
-                    console.log('Upload to imgur Succeeded, link: ' + link);
+                    logger.info('Upload to imgur Succeeded, link: ' + link);
                     rb({
                         method: 'POST',
                         uri: responseURL,
@@ -63,7 +61,7 @@ var createImgurLinkForDotString = function (request, response) {
                     });
                 })
                 .catch(function (err) {
-                    console.error('Error: ' + err.message);
+                    logger.error(err, 'Error uploading dot file to imgur');
                     rb({
                         method: 'POST',
                         uri: responseURL,

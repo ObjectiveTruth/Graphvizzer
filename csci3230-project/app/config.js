@@ -16,16 +16,21 @@ config.slack = {
 
 config.general = {
     MAXIMUM_DOT_STRING_LENGTH_NOT_INCLUDING_NEW_LINES: process.env.GRAPHVIZZER_MAXIMUM_DOT_STRING_LENGTH || 500,
-    TEMPORARY_GRAPH_FILE_DIRECTORY: process.env.GRAPHVIZZER_TEMPORARY_GRAPH_FILE_DIRECTORY || './temp/'
+    TEMPORARY_GRAPH_FILE_DIRECTORY: process.env.GRAPHVIZZER_TEMPORARY_GRAPH_FILE_DIRECTORY || './temp/',
+    LISTEN_PORT: 9000,
+    MONGO_ADDRESS: 'localhost:27017/userComments'
 };
 
 config.messages = {
     SystemMessages: {
         // Errors
+        NoPersistentDatabaseFound: 'No persistent MongoDB found, ' +
+            'using an in-memory database for now. It will be cleared when the server stops',
         BadFormDataFromSlack: 'Incorrect form data from slack',
         BadTokenFromSlack: 'Bad Token Received, are you authorized??',
         UnexpectedSystemError: 'Unexpected System Error: Try raising a bug ' +
-            'https://github.com/ObjectiveTruth/Graphvizzer/issues'
+            'https://github.com/ObjectiveTruth/Graphvizzer/issues',
+        ErrorSavingComment: 'Error processing your comment.'
     },
     BusinessMessages: {
         // Errors
