@@ -8,7 +8,6 @@ var logger = new winston.Logger({
             handleExceptions: true,
             json: false,
             colorize: true,
-            timestamp: true,
             prettyPrint: true
         })
     ],
