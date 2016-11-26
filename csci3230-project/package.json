@@ -34,12 +34,14 @@
     "pug": "^2.0.0-beta6",
     "request": "^2.79.0",
     "request-promise": "^4.1.1",
-    "serve-favicon": "^2.3.2"
+    "serve-favicon": "^2.3.2",
+    "winston": "^2.3.0"
   },
   "devDependencies": {
     "istanbul": "^0.4.5",
     "jscs": "^3.0.7",
     "mocha": "^3.1.2",
+    "mockgoose": "^6.0.8",
     "supertest": "^2.0.1"
   }
 }
