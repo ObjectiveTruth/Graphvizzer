@@ -24,7 +24,7 @@ describe('loading express', function () {
             .expect(200, done);
     });
 
-    it('responds to slack messages', function(done) {
+    it('responds to slack messages', function (done) {
         request(server)
             .post('/createImgurLinkForDOTString')
             .send({
