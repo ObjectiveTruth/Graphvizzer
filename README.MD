@@ -41,33 +41,61 @@ Uses [Play2! Scala](https://www.playframework.com/) to communicate between [imgu
 
 ![Interaction Diagram](readme_resources/InteractionDiagram.jpeg "Interaction Diagram")
 
-## Project Setup (Nodejs required)
+## Project Setup and Execution
 
-Change to the directory `/csci3230-project` and download dependencies with `npm install`
+### Using `Nodejs`
+---
 
-### Run local server
+1. The project is located in the `/csci3230-project` directory, so make sure to change to that folder.
 
-`npm start`
+2. Download all dependencies needed using `npm install`.
 
-### Integration tests
+3. The `dot` command must be runnable from the command line. This utility comes with `Graphvizz`, which can be installed the following way:
 
-`npm test`
+	##### Ubuntu Install
 
-### Building the docker
+	```
+	$ apt-get install -y graphviz
+	```
+	
+	##### OSX Install (Homebrew required)
+	
+	```
+	$ brew install graphviz
+	```
+	
+4. Start the MongoDB database using the `mongod` command.
 
-Must be in the project root directory
+	*Note: If MongoDB is not detected, an in-memory MongoDB instance will be created; however, for full functinoality, the above step is preferred.*
+
+5. Run local server by using `npm start`.
+
+6. View at `localhost:9000` in your browser.
+
+#### Integration tests
+
+```
+$ npm test
+```
+
+#### Building the docker
+
+You must be in the project root directory in order to execute the commands below.
 
 1. Build the `Docker` image
 
-  `docker build -t objectivetruth/graphvizzer .`
+  ```
+  $ docker build -t objectivetruth/graphvizzer .
+  ```
   
 2. Run the `Docker` image
 
-  `docker run -p 9000:9000 objectivetruth/graphvizzer`
-  
-View at `localhost:9000` in your browser
+  ```
+  $ docker run -p 9000:9000 objectivetruth/graphvizzer
+  ```
 
-## Project Setup (Scala)
+### Using `Scala`
+---
 
 [IntelliJ](https://www.jetbrains.com/idea/) is the recommended way to edit the project
 
@@ -75,7 +103,9 @@ Simply import the project based on an `sbt` model to get started
 
 ### Integration Tests
 
-`activator test`
+```
+$ activator test
+```
 
 ## License
 
