@@ -58,7 +58,7 @@ Uses [Play2! Scala](https://www.playframework.com/) to communicate between [imgu
 	$ apt-get install -y graphviz
 	```
 	
-	##### OSX Install (Homebrew required)
+	##### OSX Install ([Homebrew](http://brew.sh/) required)
 	
 	```
 	$ brew install graphviz
