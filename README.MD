@@ -6,6 +6,10 @@
 
 Makes graphs with imgur links directly in your chat channel, instantly, using the popular [DOT](http://www.graphviz.org/content/dot-language) notation. 
 
+View the production version at [https://graphvizzer.objectivetruth.ca]()
+
+View the stage version at [http://graphvizzer.stage.objectivetruth.ca]()
+
 ![Example Usage](readme_resources/graphviz_demo.gif "Example Usage")
 
 ## History
@@ -37,7 +41,33 @@ Uses [Play2! Scala](https://www.playframework.com/) to communicate between [imgu
 
 ![Interaction Diagram](readme_resources/InteractionDiagram.jpeg "Interaction Diagram")
 
-## Project Setup
+## Project Setup (Nodejs required)
+
+Change to the directory `/csci3230-project` and download dependencies with `npm install`
+
+### Run local server
+
+`npm start`
+
+### Integration tests
+
+`npm test`
+
+### Building the docker
+
+Must be in the project root directory
+
+1. Build the `Docker` image
+
+  `docker build -t objectivetruth/graphvizzer .`
+  
+2. Run the `Docker` image
+
+  `docker run -p 9000:9000 objectivetruth/graphvizzer`
+  
+View at `localhost:9000` in your browser
+
+## Project Setup (Scala)
 
 [IntelliJ](https://www.jetbrains.com/idea/) is the recommended way to edit the project
 
@@ -46,24 +76,6 @@ Simply import the project based on an `sbt` model to get started
 ### Integration Tests
 
 `activator test`
-
-### Nodejs Deployment
-
-`node index.js`
-
-### Building the docker
-
-1. Package the `Play2!-Scala` app
-
-  `activator universal:packageZipTarball`
-
-2. Build the `Docker` image
-
-  `docker build -t objectivetruth/graphvizzer .`
-  
-3. Push the image to `Docker Hub`
-
-  `docker push objectivetruth/graphvizzer:latest`
 
 ## License
 
