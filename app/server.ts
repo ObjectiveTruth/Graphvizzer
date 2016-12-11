@@ -7,8 +7,8 @@ var mongoose = require('mongoose');
 var mockgoose = require('mockgoose');
 var favicon = require('serve-favicon');
 var fs = require('fs');
-var config = require('./app/config.js');
-var logger = require('./app/logger.js');
+var config = require('./config/config.js');
+var logger = require('./logger/logger.js');
 
 var app = express();
 
@@ -68,9 +68,9 @@ app.get('/isAlive', function (req, res) {
     res.send('Yup, it\'s alive!');
 });
 
-app.post('/createImgurLinkForDOTString', require('./app/routes/createImgurLinkForDotString.js'));
+app.post('/createImgurLinkForDOTString', require('./routes/createImgurLinkForDotString.js'));
 
-app.get('/register', require('./app/routes/register.js'));
+app.get('/register', require('./routes/register.js'));
 
 app.post('/processDOT', function (req, res) {
     if (!req.body.inputDOTString) {

@@ -1,9 +1,9 @@
-var config = require('../config.js');
+var config = require('../config/config.js');
 var imgur = require('imgur');
 var exec = require('child_process').exec;
 var rb = require('request-promise');
 var fs = require('fs');
-var logger = require('../logger.js');
+var logger = require('../logger/logger.js');
 
 var createImgurLinkForDotString = function (request, response) {
     const TEMPORARY_GRAPHVIZ_FILE_PATH = config.general.TEMPORARY_GRAPH_FILE_DIRECTORY + Date.now() + '.png';

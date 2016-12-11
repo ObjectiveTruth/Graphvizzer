@@ -1,6 +1,6 @@
-var config = require('../config.js');
+var config = require('../config/config.js');
 var rb = require('request-promise');
-var logger = require('../logger.js');
+var logger = require('../logger/logger.js');
 
 var register = function (request, response) {
     rb({
