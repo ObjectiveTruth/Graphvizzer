@@ -1,16 +1,17 @@
-var imgur = require('imgur');
+import imgur from 'imgur';
 import config from '../config/config';
-var exec = require('child_process').exec;
-var rb = require('request-promise');
-var fs = require('fs');
-var logger = require('../logger/logger.js');
+import * as child_process from 'child_process';
+let exec = child_process.exec;
+import rb from 'request-promise';
+import * as fs from 'fs';
+import logger from '../logger/logger.js';
 
-var createImgurLinkForDotString = function (request, response) {
+export default function (request, response) {
     const TEMPORARY_GRAPHVIZ_FILE_PATH = config.general.TEMPORARY_GRAPH_FILE_DIRECTORY + Date.now() + '.png';
 
-    var inputDotString = request.body.text;
-    var inputToken = request.body.token;
-    var responseURL = request.body.response_url;
+    const inputDotString = request.body.text;
+    const inputToken = request.body.token;
+    const responseURL = request.body.response_url;
 
     if (inputToken !== config.slack.SLACK_AUTHENTICATION_TOKEN) {
         response.send({
@@ -31,11 +32,11 @@ var createImgurLinkForDotString = function (request, response) {
         });
     }
 
-    var command = 'echo "' + request.body.text + '" | dot -Tpng -o ' + TEMPORARY_GRAPHVIZ_FILE_PATH;
+    const command = 'echo "' + request.body.text + '" | dot -Tpng -o ' + TEMPORARY_GRAPHVIZ_FILE_PATH;
 
     exec(command, function (error, stdout, stderr) {
         if (error) {
-            logger.error(error, 'Error processing the DOT file');
+            logger.error(error.stack, 'Error processing the DOT file');
             rb({
                 method: 'POST',
                 uri: responseURL,
@@ -48,7 +49,7 @@ var createImgurLinkForDotString = function (request, response) {
         }else {
             imgur.uploadFile(TEMPORARY_GRAPHVIZ_FILE_PATH)
                 .then(function (response) {
-                    var link = response.data.link;
+                    const link = response.data.link;
                     logger.info('Upload to imgur Succeeded, link: ' + link);
                     rb({
                         method: 'POST',
@@ -78,5 +79,3 @@ var createImgurLinkForDotString = function (request, response) {
         }
     });
 };
-
-module.exports = createImgurLinkForDotString;

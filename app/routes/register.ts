@@ -1,8 +1,8 @@
 import config from '../config/config';
-var rb = require('request-promise');
-var logger = require('../logger/logger.js');
+import rb from 'request-promise';
+import logger from '../logger/logger';
 
-var register = function (request, response) {
+let register = function (request, response) {
     rb({
         uri: config.slack.OAUTH_ENDPOINT,
         qs: {

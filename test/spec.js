@@ -4,7 +4,7 @@ describe('loading express', function () {
     var server;
 
     beforeEach(function () {
-        server = require('./server');
+        server = require('../dist/server');
     });
 
     afterEach(function () {
@@ -50,6 +50,6 @@ describe('loading express', function () {
     it('404 everything else', function (done) {
         request(server)
             .get('/foo/bar')
-            .expect(404, done);
+            .expect(302, done);
     });
 });

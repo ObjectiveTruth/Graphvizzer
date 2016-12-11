@@ -6,18 +6,20 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha -R spec test/spec.js",
-    "test-with-coverage-report": "istanbul cover node_modules/mocha/bin/_mocha -R spec test/spec.js",
-    "check-style": "jscs server.js",
+    "test": "npm run build-dist && mocha -R spec test/spec.js",
+    "test-with-coverage-report": "npm run build-dist && istanbul cover node_modules/mocha/bin/_mocha -R spec test/spec.js",
+    "check-style": "tslint -c tslint.json 'app/**/*.ts'",
     "build-static-files": "pug app/views/[^_]*.pug --out dist/public/ && cp -r app/public/ dist/public",
-    "start": "node dist/server.js"
+    "build-javascript": "tsc --p tsconfig.json",
+    "build-dist": "npm run build-static-files && npm run build-javascript && cp package.json dist/",
+    "start": "node dist/server.js",
+    "start-docker": "node server.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ObjectiveTruth/Graphvizzer.git"
   },
   "keywords": [
-    "graphvizzer",
     "graphviz",
     "dot"
   ],
@@ -43,11 +45,11 @@
     "@types/node": "0.0.2",
     "@types/winston": "0.0.32",
     "istanbul": "^0.4.5",
-    "jscs": "^3.0.7",
     "mocha": "^3.1.2",
     "mockgoose": "^6.0.8",
     "pug-cli": "^1.0.0-alpha6",
     "supertest": "^2.0.1",
+    "tslint": "^4.0.2",
     "typescript": "^2.1.4"
   }
 }

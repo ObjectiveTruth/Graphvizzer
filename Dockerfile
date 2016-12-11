@@ -15,4 +15,4 @@ ADD dist/ /app/
 WORKDIR /app/
 RUN npm install --production
 
-CMD ["npm", "start"]
+CMD ["npm", "run", "start-docker]

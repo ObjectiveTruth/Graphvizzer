@@ -1,6 +1,6 @@
 export default {
 
-    status:{
+    status: {
         STATE_FAILURE: 1,
         STATE_SUCCESS: 0
     },

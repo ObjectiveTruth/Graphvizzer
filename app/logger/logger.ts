@@ -18,3 +18,4 @@ module.exports.stream = {
         logger.info(message);
     }
 };
+export default logger;
