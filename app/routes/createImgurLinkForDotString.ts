@@ -1,5 +1,5 @@
-var config = require('../config/config.js');
 var imgur = require('imgur');
+import config from '../config/config';
 var exec = require('child_process').exec;
 var rb = require('request-promise');
 var fs = require('fs');

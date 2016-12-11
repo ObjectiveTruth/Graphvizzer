@@ -1,5 +1,4 @@
-'use strict';
-var express = require('express');
+import * as express from 'express';
 var exec = require('child_process').exec;
 var bodyParser = require('body-parser');
 var imgur = require('imgur');
@@ -7,7 +6,7 @@ var mongoose = require('mongoose');
 var mockgoose = require('mockgoose');
 var favicon = require('serve-favicon');
 var fs = require('fs');
-var config = require('./config/config.js');
+import config from './config/config';
 var logger = require('./logger/logger.js');
 
 var app = express();
@@ -117,10 +116,6 @@ app.post('/processDOT', function (req, res) {
                 });
         }
     });
-});
-
-app.get('/reviews', function (req, res) {
-    res.render('reviews', { title: 'Reviews', nav: 'review' });
 });
 
 app.post('/loadAllComments', function (req, res) {

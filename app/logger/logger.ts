@@ -1,7 +1,5 @@
-var winston = require('winston');
-winston.emitErrs = true;
-
-var logger = new winston.Logger({
+import * as winston from 'winston';
+let logger = new winston.Logger({
     transports: [
         new winston.transports.Console({
             level: 'debug',

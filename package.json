@@ -9,7 +9,7 @@
     "test": "mocha -R spec test/spec.js",
     "test-with-coverage-report": "istanbul cover node_modules/mocha/bin/_mocha -R spec test/spec.js",
     "check-style": "jscs server.js",
-    "start": "node app/server.js"
+    "start": "node dist/server.js"
   },
   "repository": {
     "type": "git",
@@ -39,10 +39,13 @@
     "winston": "^2.3.0"
   },
   "devDependencies": {
+    "@types/node": "0.0.2",
+    "@types/winston": "0.0.32",
     "istanbul": "^0.4.5",
     "jscs": "^3.0.7",
     "mocha": "^3.1.2",
     "mockgoose": "^6.0.8",
-    "supertest": "^2.0.1"
+    "supertest": "^2.0.1",
+    "typescript": "^2.1.4"
   }
 }

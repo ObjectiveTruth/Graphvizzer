@@ -1,4 +1,4 @@
-var config = require('../config/config.js');
+import config from '../config/config';
 var rb = require('request-promise');
 var logger = require('../logger/logger.js');
 
