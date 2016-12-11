@@ -9,6 +9,7 @@
     "test": "mocha -R spec test/spec.js",
     "test-with-coverage-report": "istanbul cover node_modules/mocha/bin/_mocha -R spec test/spec.js",
     "check-style": "jscs server.js",
+    "build-static-files": "pug app/views/[^_]*.pug --out dist/public/ && cp -r app/public/ dist/public",
     "start": "node dist/server.js"
   },
   "repository": {
@@ -45,6 +46,7 @@
     "jscs": "^3.0.7",
     "mocha": "^3.1.2",
     "mockgoose": "^6.0.8",
+    "pug-cli": "^1.0.0-alpha6",
     "supertest": "^2.0.1",
     "typescript": "^2.1.4"
   }

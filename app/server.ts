@@ -6,6 +6,7 @@ var mongoose = require('mongoose');
 var mockgoose = require('mockgoose');
 var favicon = require('serve-favicon');
 var fs = require('fs');
+import * as path from 'path';
 import config from './config/config';
 var logger = require('./logger/logger.js');
 
@@ -46,22 +47,7 @@ app.use(favicon(__dirname + '/public/images/favicon.ico'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.use(express.static('public'));
-
-app.set('views', __dirname + '/views');
-app.set('view engine', 'pug');
-
-app.get('/', function (req, res) {
-    res.render('index', { title: 'Home', nav: 'home' });
-});
-
-app.get('/processDOT', function (req, res) {
-    res.render('dot-input', { title: 'DOT', nav: 'dot' });
-});
-
-app.get('/reviews', function (req, res) {
-    res.render('reviews', { title: 'Reviews', nav: 'review' });
-});
+app.use('/', express.static(path.join(__dirname, 'public')));
 
 app.get('/isAlive', function (req, res) {
     res.send('Yup, it\'s alive!');
@@ -165,6 +151,11 @@ app.post('/submitNewComment', function (req, res) {
                 state: STATE_SUCCESS });
         }
     });
+});
+
+// If no path matches redirect to /
+app.get('/*', function(req, res) {
+    res.redirect('/')
 });
 
 var server = app.listen(config.general.LISTEN_PORT, function () {
