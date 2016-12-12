@@ -5,7 +5,6 @@ machine:
     version: v6.1.0
   services:
     - docker
-    - mongodb
 
 dependencies:
   override:
@@ -13,12 +12,12 @@ dependencies:
     - docker info
     - npm install codecov --global
     - npm install
-    - docker build -t objectivetruth/graphvizzer:latest .
 
 test:
   override:
-    - npm run-script test-with-coverage-report
-    - npm run-script check-style
+    - npm run test-with-coverage-report
+    - npm run check-style
+    - docker build -t objectivetruth/graphvizzer:latest .
   post:
     - codecov
 

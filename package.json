@@ -9,7 +9,7 @@
     "test": "npm run build-dist && mocha -R spec test/spec.js",
     "test-with-coverage-report": "npm run build-dist && istanbul cover node_modules/mocha/bin/_mocha -R spec test/spec.js",
     "check-style": "tslint -c tslint.json 'app/**/*.ts'",
-    "build-static-files": "pug app/views/[^_]*.pug --out dist/public/ && cp -r app/public/ dist/public",
+    "build-static-files": "pug app/views/*.pug --out dist/public/ && cp -vr app/public dist/",
     "build-javascript": "tsc --p tsconfig.json",
     "build-dist": "npm run build-static-files && npm run build-javascript && cp package.json dist/",
     "start": "node dist/server.js",
