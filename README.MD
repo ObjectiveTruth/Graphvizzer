@@ -92,6 +92,7 @@ You must be in the project root directory in order to execute the commands below
   $ docker run -p 9000:9000 objectivetruth/graphvizzer
   ```
 
+
 ## License
 
 [GNU General Public License v3.0](http://choosealicense.com/licenses/gpl-3.0/#)
