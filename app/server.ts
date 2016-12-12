@@ -71,16 +71,20 @@ app.post('/processDOT', function (req, res) {
 
     const TEMPORARY_GRAPHVIZ_FILE_PATH = config.general.TEMPORARY_GRAPH_FILE_DIRECTORY + Date.now() + '.png';
 
-    const command = 'echo "' + req.body.inputDOTString + '" | dot -Tpng -o ' + TEMPORARY_GRAPHVIZ_FILE_PATH;
+    const command = 'dot -Tpng -o ' + TEMPORARY_GRAPHVIZ_FILE_PATH;
 
-    exec(command, function (error, stdout, stderr) {
+    let dotProcess = exec(command, function (error, stdout, stderr) {
         if (error) {
-            logger.error(error.stack);
+            logger.error(error.message, 'Error processing the DOT file');
             res.send({
                 state: STATE_FAILURE,
                 message: 'Error processing your dot string'
             });
-        }else {
+        }
+    });
+    dotProcess.stdin.end(req.body.inputDOTString);
+    dotProcess.on('exit', (code) => {
+        if (code === 0) {
             imgur.uploadFile(TEMPORARY_GRAPHVIZ_FILE_PATH)
                 .then(function (result) {
                     const link = result.data.link;
@@ -99,9 +103,9 @@ app.post('/processDOT', function (req, res) {
                         message: 'Error while uploading to imgur'
                     });
                 })
-                .done(function () {
-                    fs.unlink(TEMPORARY_GRAPHVIZ_FILE_PATH, function () {});
-                });
+                .done(() => {fs.unlink(TEMPORARY_GRAPHVIZ_FILE_PATH, () => {}); });
+        }else {
+            fs.unlink(TEMPORARY_GRAPHVIZ_FILE_PATH, function () {});
         }
     });
 });
