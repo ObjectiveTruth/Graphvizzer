@@ -1,7 +1,0 @@
-# Routes
-# This file defines all application routes (Higher priority routes first)
-# ~~~~
-
-POST     /createImgurLinkForDOTString controllers.GraphvizCreationController.createGraphvizDotStringAndReturnImgurLink
-GET     / controllers.HealthCheckController.isAlive
-GET     /register controllers.RegisterController.registerTeam(code: String)
