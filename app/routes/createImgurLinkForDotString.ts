@@ -1,4 +1,4 @@
-import imgur from 'imgur';
+import imgur = require('imgur');
 import config from '../config/config';
 import * as child_process from 'child_process';
 let exec = child_process.exec;
