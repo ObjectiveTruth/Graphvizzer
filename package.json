@@ -39,6 +39,7 @@
     "request": "^2.79.0",
     "request-promise": "^4.1.1",
     "serve-favicon": "^2.3.2",
+    "mockgoose": "^6.0.8",
     "winston": "^2.3.0"
   },
   "devDependencies": {
@@ -46,7 +47,6 @@
     "@types/winston": "0.0.32",
     "istanbul": "^0.4.5",
     "mocha": "^3.1.2",
-    "mockgoose": "^6.0.8",
     "pug-cli": "^1.0.0-alpha6",
     "supertest": "^2.0.1",
     "tslint": "^4.0.2",

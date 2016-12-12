@@ -1,15 +1,16 @@
 import * as express from 'express';
 import * as child_process from 'child_process';
-let exec = child_process.exec;
+var exec = child_process.exec;
 import bodyParser = require('body-parser');
 import imgur = require('imgur');
 import mongoose = require('mongoose');
-let mockgoose = require('mockgoose');
-import favicon from 'serve-favicon';
+var mockgoose = require('mockgoose');
+var favicon = require('serve-favicon');
 import * as fs from 'fs';
 import * as path from 'path';
 import config from './config/config';
-import logger from './logger/logger.js';
+import createImgurLinkRoute from './routes/createImgurLinkForDotString';
+var logger = require('./logger/logger.js');
 
 let app = express();
 
@@ -54,7 +55,7 @@ app.get('/isAlive', function (req, res) {
     res.send('Yup, it\'s alive!');
 });
 
-app.post('/createImgurLinkForDOTString', require('./routes/createImgurLinkForDotString.js'));
+app.post('/createImgurLinkForDOTString', createImgurLinkRoute);
 
 app.get('/register', require('./routes/register.js'));
 

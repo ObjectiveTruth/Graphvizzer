@@ -1,6 +1,6 @@
 import config from '../config/config';
 import rb from 'request-promise';
-import logger from '../logger/logger';
+var logger = require('../logger/logger');
 
 let register = function (request, response) {
     rb({
