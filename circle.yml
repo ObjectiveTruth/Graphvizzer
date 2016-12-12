@@ -12,23 +12,15 @@ dependencies:
     - pip install awscli
     - docker info
     - npm install codecov --global
-    - npm install:
-        pwd:
-          csci3230-project
+    - npm install
     - docker build -t objectivetruth/graphvizzer:latest .
 
 test:
   override:
-    - npm run-script test-with-coverage-report:
-        pwd:
-          csci3230-project
-    - npm run-script check-style:
-        pwd:
-          csci3230-project
+    - npm run-script test-with-coverage-report
+    - npm run-script check-style
   post:
-    - codecov:
-        pwd:
-          csci3230-project
+    - codecov
 
 deployment:
   production:
