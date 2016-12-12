@@ -31,12 +31,11 @@ export default function (request, response) {
             response_type: config.slack.EPHEMERAL_RESPONSE_TYPE
         });
     }
+    const command = 'dot -Tpng -o ' + TEMPORARY_GRAPHVIZ_FILE_PATH;
 
-    const command = 'echo "' + request.body.text + '" | dot -Tpng -o ' + TEMPORARY_GRAPHVIZ_FILE_PATH;
-
-    exec(command, function (error, stdout, stderr) {
+    let dotProcess = exec(command, function (error, stdout, stderr) {
         if (error) {
-            logger.error(error.stack, 'Error processing the DOT file');
+            logger.error(error.message, 'Error processing the DOT file');
             rb({
                 method: 'POST',
                 uri: responseURL,
@@ -46,7 +45,11 @@ export default function (request, response) {
                 },
                 json: true
             });
-        }else {
+        }
+    });
+    dotProcess.stdin.end(inputDotString);
+    dotProcess.on('exit', (code) => {
+        if (code === 0) {
             imgur.uploadFile(TEMPORARY_GRAPHVIZ_FILE_PATH)
                 .then(function (response) {
                     const link = response.data.link;
@@ -73,9 +76,9 @@ export default function (request, response) {
                         json: true
                     });
                 })
-                .done(function () {
-                    fs.unlink(TEMPORARY_GRAPHVIZ_FILE_PATH, function () {});
-                });
+                .done(() => {fs.unlink(TEMPORARY_GRAPHVIZ_FILE_PATH, () => {}); });
+        }else {
+            fs.unlink(TEMPORARY_GRAPHVIZ_FILE_PATH, () => {});
         }
     });
 };
