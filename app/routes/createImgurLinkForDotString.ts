@@ -2,9 +2,9 @@ import imgur = require('imgur');
 import config from '../config/config';
 import * as child_process from 'child_process';
 let exec = child_process.exec;
-import rb from 'request-promise';
-import * as fs from 'fs';
-import logger from '../logger/logger.js';
+let rb = require('request-promise');
+let fs = require('fs');
+let logger = require('../logger/logger.js');
 
 export default function (request, response) {
     const TEMPORARY_GRAPHVIZ_FILE_PATH = config.general.TEMPORARY_GRAPH_FILE_DIRECTORY + Date.now() + '.png';
