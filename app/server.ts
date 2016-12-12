@@ -1,16 +1,16 @@
 import * as express from 'express';
 import * as child_process from 'child_process';
-var exec = child_process.exec;
+let exec = child_process.exec;
 import bodyParser = require('body-parser');
 import imgur = require('imgur');
 import mongoose = require('mongoose');
-var mockgoose = require('mockgoose');
-var favicon = require('serve-favicon');
+let mockgoose = require('mockgoose');
+let favicon = require('serve-favicon');
 import * as fs from 'fs';
 import * as path from 'path';
 import config from './config/config';
 import createImgurLinkRoute from './routes/createImgurLinkForDotString';
-var logger = require('./logger/logger.js');
+let logger = require('./logger/logger.js');
 
 let app = express();
 
