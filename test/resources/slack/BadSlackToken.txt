@@ -1,1 +1,0 @@
-token=foo&team_id=T0001&team_domain=example&channel_id=C2147483705&channel_name=test&user_id=U2147483697&user_name=Steve&command=%2Fweather&text=digraph%20G%7B%5CnA%20-%3E%20B%3B%5Cn%20C%20-%3E%20B%3B%5Cn%7D&response_url=https:%2F%2Fhooks.slack.com%2Fcommands%2F1234%2F567

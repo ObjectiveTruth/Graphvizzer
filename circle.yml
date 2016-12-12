@@ -5,30 +5,21 @@ machine:
     version: v6.1.0
   services:
     - docker
-    - mongodb
 
 dependencies:
   override:
     - pip install awscli
     - docker info
     - npm install codecov --global
-    - npm install:
-        pwd:
-          csci3230-project
-    - docker build -t objectivetruth/graphvizzer:latest .
+    - npm install
 
 test:
   override:
-    - npm run-script test-with-coverage-report:
-        pwd:
-          csci3230-project
-    - npm run-script check-style:
-        pwd:
-          csci3230-project
+    - npm run test-with-coverage-report
+    - npm run check-style
+    - docker build -t objectivetruth/graphvizzer:latest .
   post:
-    - codecov:
-        pwd:
-          csci3230-project
+    - codecov
 
 deployment:
   production:
