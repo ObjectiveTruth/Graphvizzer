@@ -1,5 +1,5 @@
 import config from '../config/config';
-import rb from 'request-promise';
+let rb = require('request-promise');
 let logger = require('../logger/logger');
 
 let register = function (request, response) {
