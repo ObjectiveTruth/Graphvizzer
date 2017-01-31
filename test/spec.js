@@ -24,7 +24,7 @@ describe('loading express', function () {
             .expect(200, done);
     });
 
-    it('responds to slack messages', function (done) {
+/*    it('responds to slack messages', function (done) {
         request(server)
             .post('/createImgurLinkForDOTString')
             .send({
@@ -44,6 +44,13 @@ describe('loading express', function () {
                 response_type: 'ephemeral'
             })
             .expect('Content-Type', /application\/json/)
+            .expect(200, done);
+    });*/
+
+    it('responds to register', function (done) {
+        request(server)
+            .get('/register?code=12345678&state=')
+            .expect('Unexpected System Error: Try raising a bug https://github.com/ObjectiveTruth/Graphvizzer/issues')
             .expect(200, done);
     });
 
