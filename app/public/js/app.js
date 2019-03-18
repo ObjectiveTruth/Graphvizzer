@@ -19,7 +19,7 @@ function createNewComment(name, comment, time) {
 	centerDiv.append(colDiv);
 
 	$('#all-comments').append(centerDiv);
-	
+
 }
 
 function clearReviewFields() {
@@ -28,41 +28,47 @@ function clearReviewFields() {
 }
 
 $(document).ready(function () {
-		
+
 	$.post('/loadAllComments')
 		.then(function(result) {
-		
+
 			$.each(result.allComments, function(index, comment) {
 			createNewComment(comment.username, comment.content, comment.timestamp);
 			});
 		})
 		.catch(function(error) {
-			
+
 			console.log('There\'s been an error loading past comments.');
-		
+
 		});
-		
+
     $('#create-link-button').click(function (event) {
         event.preventDefault();
-		
+
         var inputDOTString = $('#input-DOT-string').val();
-        
+
 		console.log('from app.js: '+inputDOTString);
 		var pTag = $('<p>');
 
         $.post('/processDOT', { inputDOTString: inputDOTString })
             .then(function (result) {
-				
+
                 var link = result.data.link;
-				var secureLink = link.replace('http', 'https');
-			
+				var secureLink;
+				if (!link.includes("https")) {
+					secureLink = link.replace('http', 'https');
+				} else {
+					secureLink = link;
+				}
+
+
 				pTag.addClass('success')
 					.text('Success! Scroll down to see your image.');
-			
+
 				$('#warning-dot').html(pTag);
-			
+
 				var imgTag = $('<img>').attr("src", secureLink);
-			
+
 				$('#result').html('')
 							.append(imgTag)
 							.append('<br><br>')
@@ -70,7 +76,7 @@ $(document).ready(function () {
 
             })
             .catch(function (error) {
-			
+
 				if (error) {
 					pTag.addClass('error')
 						.text('Uh... are you sure that syntax is valid? Please try again.');
@@ -80,25 +86,25 @@ $(document).ready(function () {
 
             });
     });
-	
+
 	$('#submit-comment-button').click(function (event) {
 		event.preventDefault();
 		var pTag = $('<p>');
-		
-		var username = $('#input-name').val();	
+
+		var username = $('#input-name').val();
 		var comment = $('#input-comment').val();
-		var currentTime = new Date().toUTCString();			
-		
+		var currentTime = new Date().toUTCString();
+
 		if (username == '')
 			username = 'Anonymous';
-		
+
 		if ($('#input-comment').val().length <= 250) {
-			
+
 			if (comment.length > 1) {
-				
+
 				createNewComment(username, comment, currentTime);
 				clearReviewFields();
-						
+
 				$.post('/submitNewComment', {username: username, userInputComment: comment, timestamp: currentTime})
 					.then(function(result) {
 						pTag.addClass('success')
@@ -116,8 +122,8 @@ $(document).ready(function () {
 			pTag.addClass('error')
 					.text('Your comment is too long! Remember the max. count 250 characers.');
 		}
-		
+
 		$('#warning-comment').html(pTag);
 	});
-	
+
 });
