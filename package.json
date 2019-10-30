@@ -34,7 +34,7 @@
     "child_process": "^1.0.2",
     "express": "^4.14.0",
     "imgur": "^0.1.7",
-    "mongoose": "^4.7.0",
+    "mongoose": "^5.7.7",
     "pug": "^2.0.0-beta6",
     "request": "^2.79.0",
     "request-promise": "^4.1.1",
