@@ -34,7 +34,7 @@ export default {
         },
         BusinessMessages: {
             // Errors
-            BadDOTFormatFromSlack: 'Incorrect format, see the <www.graphviz.org/Documentation/dotguide.pdf|DOT guide> ' +
+            BadDOTFormatFromSlack: 'Incorrect format, see the <https://www.graphviz.org/pdf/dotguide.pdf|DOT guide> ' +
             'or examples below:\n>>>`digraph{beaver->platypus duck->platypus}`\n`graph{ying--yang}`',
             BadDOTLengthFromSlack: 'DOT string is great than 500 characters, please by kind to my little server',
 
